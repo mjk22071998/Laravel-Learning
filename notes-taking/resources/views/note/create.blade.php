@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="note-container single-note">
         <h1 class="text-3xl py-4">Create New Note</h1>
-        <form action="{{ route('note.store') }}" method="POST" class="note">
+        <form action="{{ route('note.store') }}" method="POST" class="note-form">
             @csrf
             @method('post')
             <label for="title">Node Title</label><input id="title" type="text" name="name" class="note-body"
