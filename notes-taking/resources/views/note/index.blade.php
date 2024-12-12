@@ -1,3 +1,26 @@
-<div>
-    <h1>Home Page</h1>
-</div>
+<x-layout>
+    <div class="note-container">
+        <a href="{{ route('note.create') }}" class="new-note-btn">New Note</a>
+        <div class="notes">
+            @foreach ($notes as $note)
+                <div class="note">
+                    <div class="note-header">
+                        <h2>{{ $note->name }}</h2>
+                    </div>
+                    <div class="note-body">
+                        <p>{{ Str::words($note->note, 20) }}</p>
+                    </div>
+                    <div class="note-buttons">
+                        <a href="{{ route('note.show', $note) }}" class="note-button">View</a>
+                        <a href="{{ route('note.edit', $note) }}" class="note-button">Edit</a>
+                        <form action="{{ route('note.destroy', $note) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="note-delete-button">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</x-layout>
