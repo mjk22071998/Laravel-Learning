@@ -31,12 +31,16 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string'],
+        $request->validate([
+            'name' => ['required', 'string', 'max:50'],
             'note' => ['required', 'string'],
         ]);
-        $data['user_id'] = $request->user()->id;
-        $note = Note::create($data);
+
+        $note = Note::create([
+            'user_id' => $request->user()->id,
+            'name' => $request->name,
+            'note' => $request->note
+        ]);
         return to_route('note.show', $note);
     }
 
@@ -71,12 +75,16 @@ class NoteController extends Controller
     {
         if ($note->user_id !== request()->user()->id) {
             abort(403);
+
         } else {
+
             $data = $request->validate([
                 'name' => ['required', 'string'],
                 'note' => ['required', 'string'],
             ]);
+
             $note->update($data);
+            
             return to_route('note.show', $note);
         }
     }

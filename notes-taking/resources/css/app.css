@@ -9,7 +9,7 @@
 }
 
 .note-container {
-    max-width: 980px;
+    max-width: 90%;
     margin: 0 auto;
 }
 
@@ -48,6 +48,7 @@
 
 .note{
     width: 280px;
+    height: 100%;
 }
 
 .note, .note-form{
