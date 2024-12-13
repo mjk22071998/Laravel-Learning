@@ -10,4 +10,10 @@ class ClassModel extends Model
     protected $fillable = [
         "name"
     ];
+
+    // A class has many students
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 }
