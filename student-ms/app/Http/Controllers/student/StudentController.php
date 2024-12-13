@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassModel;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,8 +12,9 @@ class StudentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {   
+        $students = Student::all();
+        return view('student.index', ['students' => $students]);
     }
 
     /**
@@ -21,7 +22,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('student.create');
     }
 
     /**
@@ -35,23 +36,23 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ClassModel $classModel)
+    public function show(Student $student)
     {
-        //
+        return view('student.show', ['student' => $student]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ClassModel $classModel)
+    public function edit(Student $student)
     {
-        //
+        return view('student.edit', ['students' => $student]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ClassModel $classModel)
+    public function update(Request $request, Student $student)
     {
         //
     }
@@ -59,7 +60,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ClassModel $classModel)
+    public function destroy(Student $student)
     {
         //
     }

@@ -13,7 +13,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        return 'Subject List';
+        $subjects = Subject::all();
+        return view('subject.index', ['subjects' => $subjects]);
     }
 
     /**
@@ -21,7 +22,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return 'Create Subject Page';
+        return view('subject.create');
     }
 
     /**
@@ -37,7 +38,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        return 'Show Subject';
+        return view('subject.show', ['subject' => $subject]);
     }
 
     /**
@@ -45,7 +46,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        return 'Edit Subject';
+        return view('subject.edit', ['subject' => $subject]);
     }
 
     /**

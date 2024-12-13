@@ -13,7 +13,8 @@ class ClassController extends Controller
      */
     public function index()
     {
-
+        $classes = ClassModel::all();
+        return view('class.index', ['classes' => $classes]);
     }
 
     /**
@@ -21,7 +22,7 @@ class ClassController extends Controller
      */
     public function create()
     {
-        //
+        return view('note.show');
     }
 
     /**
@@ -37,7 +38,7 @@ class ClassController extends Controller
      */
     public function show(ClassModel $classModel)
     {
-        //
+        return view('class.show', ['classModel' => $classModel]);
     }
 
     /**
@@ -45,7 +46,7 @@ class ClassController extends Controller
      */
     public function edit(ClassModel $classModel)
     {
-        //
+        return view('class.edit', ['classModel' => $classModel]);
     }
 
     /**
