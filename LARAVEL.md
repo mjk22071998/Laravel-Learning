@@ -2,27 +2,39 @@
 
 ## Creating Models along with migrations
 
-`php artisan make:model Note -m`
+```bash
+php artisan make:model Note -m
+```
 
 ## Creating Controller
 
-`php artisan make:controller NoteController --resource --model=Note`
+```bash
+php artisan make:controller NoteController --resource --model=Note
+```
 
 ## Creating View
 
-`php artisan make:view note.index`
+```bash
+php artisan make:view note.index
+```
 
 ## Creating Factory
 
-`php artisan make:factory NoteFactory --model=Note`
+```bash
+php artisan make:factory NoteFactory --model=Note
+```
 
 ## Migrating and seeding default data
 
-`artisan migrate:fresh --seed`
+```bash
+php artisan migrate:fresh --seed
+```
 
 ## Making routes via resources
 
-`Route::resource('notes', NoteController::class);`
+```php
+Route::resource('notes', NoteController::class);
+```
 
 This will generate all following
 
