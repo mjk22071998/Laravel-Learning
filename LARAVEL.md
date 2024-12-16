@@ -45,3 +45,13 @@ This will generate all following
         'subjectCount' => $subjectCount,
     ]);
 ```
+
+## Grouping routes
+
+```php
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::resource('class', ClassController::class);
+        Route::resource('student', StudentController::class);
+        Route::resource('subject', SubjectController::class);
+    });
+```

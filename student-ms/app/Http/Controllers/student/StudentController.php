@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\student;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,8 +15,8 @@ class StudentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        $students = Student::all();
+    {
+        $students = User::where('role', 'student')->get();
         return view('student.index', ['students' => $students]);
     }
 
@@ -30,7 +33,26 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'student'
+        ]);
+
+        $user->sendEmailVerificationNotification();
+
+        $student = Student::create([
+            'user_id' => $user->id,
+            'class_id' => null
+        ]);
+        return to_route('student.index')->with('message', 'Student created');
     }
 
     /**

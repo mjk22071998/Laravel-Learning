@@ -13,9 +13,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('class', ClassController::class);
-Route::resource('student', StudentController::class);
-Route::resource('subject', SubjectController::class);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('class', ClassController::class);
+    Route::resource('student', StudentController::class);
+    Route::resource('subject', SubjectController::class);
+});
+
 
 Route::get('/dashboard', function () {
     $studentCount = User::where('role', 'student')->count();

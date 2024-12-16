@@ -49,13 +49,13 @@
                 <x-side-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-side-nav-link>
-                <x-side-nav-link :href="route('student.index')" :active="request()->routeIs('student.index')">
+                <x-side-nav-link :href="route('student.index')" :active="str_contains(request()->route()->getName(), 'student')">
                     {{ __('Students') }}
                 </x-side-nav-link>
-                <x-side-nav-link :href="route('dashboard')" :active="false">
+                <x-side-nav-link :href="route('dashboard')" :active="str_contains(request()->route()->getName(), 'subject')">
                     {{ __('Subjects') }}
                 </x-side-nav-link>
-                <x-side-nav-link :href="route('dashboard')" :active="false">
+                <x-side-nav-link :href="route('dashboard')" :active="str_contains(request()->route()->getName(), 'class')">
                     {{ __('Classes') }}
                 </x-side-nav-link>
             </nav>
