@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Subject;
+use App\Models\User;
+use App\Models\ClassModel;
 use App\Http\Controllers\student\ClassController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\student\StudentController;
@@ -15,7 +18,14 @@ Route::resource('student', StudentController::class);
 Route::resource('subject', SubjectController::class);
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $studentCount = User::where('role', 'student')->count();
+    $classCount = ClassModel::count();
+    $subjectCount = Subject::count();
+    return view('dashboard', [
+        'studentCount' => $studentCount,
+        'classCount' => $classCount,
+        'subjectCount' => $subjectCount,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

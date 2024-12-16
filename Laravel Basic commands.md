@@ -35,3 +35,13 @@ This will generate all following
     Route::put('/notes/{note}', [NoteController::class, 'update'])->name('notes.update'); // Update a specific note
     Route::delete('/notes/{note}', [NoteController::class, 'destroy'])->name('notes.destroy'); // Delete a specific note
 ```
+
+## Passing multiple variables to a page
+
+```php
+    return view('dashboard', [
+        'studentCount' => $studentCount,
+        'classCount' => $classCount,
+        'subjectCount' => $subjectCount,
+    ]);
+```

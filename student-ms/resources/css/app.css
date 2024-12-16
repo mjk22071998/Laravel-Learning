@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* .subject-card{
     
 } */
+th,
+td {
+    padding: 5px;
+}

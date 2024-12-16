@@ -20,22 +20,22 @@
     <div class="relative min-h-screen md:flex" x-data="{ open: false }">
         {{-- Sidebar --}}
         <aside :class="{ '-translate-x-full': !open }"
-            class="z-10 bg-blue-800 text-blue-100 w-64 px-2 py-4 
+            class="z-10 bg-gray-900 text-gray-100 w-64 px-2 py-4 
                 absolute inset-y-0 left-0 md:relative 
                 transform md:translate-x-0 overflow-y-auto
                 transition ease-in-out duration-200">
             {{-- App Logo and App Name  --}}
             <div class="flex flex-row items-center justify-between">
                 <div class="flex items-center space-x-2">
-                    <a href=""><x-application-logo class="block h-9 w-auto fill-current text-blue-100" /></a>
+                    <a href=""><x-application-logo class="block h-9 w-auto fill-current text-gray-100" /></a>
                     <span class="text-2xl font-extrabold">Admin Panel</span>
                 </div>
                 {{-- Toggle button --}}
                 <button type="button"
                     class="md:hidden inline-flex p-4 
                         justify-center items-center 
-                        rounded-md text-blue-100 
-                        hover:bg-blue-700 focus:outline-none"
+                        rounded-md text-gray-100 
+                        hover:bg-gray-700 focus:outline-none"
                     @click="open = !open">
                     <svg xmlns="http://www.w3.org/2000/svg" class="block h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -64,14 +64,14 @@
         {{-- Main Content --}}
         <main class="flex-1 min-h-screen bg-gray-100">
             {{-- Topbar --}}
-            <nav class="bg-blue-900 shadow-lg">
+            <nav class="bg-gray-900 shadow-lg">
                 <div class="mx-auto px-2 sm:px-6 lg:px-8">
                     <div class="relative flex items-center justify-end h-16">
                         <div class="absolute inset-y-0 left-0 flex items-center md:hidden">
                             {{-- Mobile button --}}
                             <button type="button" @click="open = !open" @click.away="open = false"
                                 class="inline-flex items-center justify-center p-2 rounded-md
-                                text-blue-100 hover:bg-blue-700 focus:outline-none">
+                                text-gray-100 hover:bg-gray-700 focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="block h-6 w-6" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -87,7 +87,7 @@
                                     <button
                                         class="inline-flex items-center px-3 py-2 
                                             border border-transparent text-sm leading-4
-                                            font-medium rounded-md text-blue-100 hover:bg-blue-600 
+                                            font-medium rounded-md text-gray-100 hover:bg-gray-600 
                                             focus:outline-none transition ease-in-out duration-150">
                                         <div>{{ Auth::user()->name }}</div>
 
