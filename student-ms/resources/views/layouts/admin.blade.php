@@ -17,7 +17,7 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="relative min-h-screen md:flex" x-data="{ open: true }">
+    <div class="relative min-h-screen md:flex" x-data="{ open: false }">
         {{-- Sidebar --}}
         <aside :class="{ '-translate-x-full': !open }"
             class="z-10 bg-blue-800 text-blue-100 w-64 px-2 py-4 
@@ -62,11 +62,11 @@
         </aside>
 
         {{-- Main Content --}}
-        <main class="flex-1 bg-gray-100">
+        <main class="flex-1 min-h-screen bg-gray-100">
             {{-- Topbar --}}
             <nav class="bg-blue-900 shadow-lg">
                 <div class="mx-auto px-2 sm:px-6 lg:px-8">
-                    <div class="relative flex items-center justify-between md:justify-end h-16">
+                    <div class="relative flex items-center justify-end h-16">
                         <div class="absolute inset-y-0 left-0 flex items-center md:hidden">
                             {{-- Mobile button --}}
                             <button type="button" @click="open = !open" @click.away="open = false"
@@ -85,7 +85,10 @@
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
                                     <button
-                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-100 hover:bg-blue-600 focus:outline-none transition ease-in-out duration-150">
+                                        class="inline-flex items-center px-3 py-2 
+                                            border border-transparent text-sm leading-4
+                                            font-medium rounded-md text-blue-100 hover:bg-blue-600 
+                                            focus:outline-none transition ease-in-out duration-150">
                                         <div>{{ Auth::user()->name }}</div>
 
                                         <div class="ms-1">
@@ -116,21 +119,6 @@
                                     </form>
                                 </x-slot>
                             </x-dropdown>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button @click="open = ! open"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:bg-blue-600 focus:outline-none transition duration-150 ease-in-out">
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                    <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
                         </div>
                     </div>
                 </div>
