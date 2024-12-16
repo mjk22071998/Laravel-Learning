@@ -49,7 +49,7 @@
                 <x-side-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
                 </x-side-nav-link>
-                <x-side-nav-link :href="route('dashboard')" :active="false">
+                <x-side-nav-link :href="route('student.index')" :active="request()->routeIs('student.index')">
                     {{ __('Students') }}
                 </x-side-nav-link>
                 <x-side-nav-link :href="route('dashboard')" :active="false">
