@@ -67,3 +67,7 @@ This will generate all following
         Route::resource('subject', SubjectController::class);
     });
 ```
+
+## Hidden fields
+
+hidden fields are not returned by server
