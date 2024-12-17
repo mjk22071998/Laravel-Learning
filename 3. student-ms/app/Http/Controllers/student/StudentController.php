@@ -68,16 +68,38 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('student.edit', ['students' => $student]);
+        return view('student.edit', ['student' => $student]);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Student $student)
-    {
-        //
+{
+    // Validate the incoming data
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class . ',email,' . $student->user->id],  // Ensuring the email is unique except for the current student's email
+    ]);
+
+    // Check if the email has changed
+    if ($student->user->email !== $request->email) {
+        // If the email is changed, set email_verified_at to null
+        $student->user->email_verified_at = null;
+        $student->user->save();
     }
+
+    // Update the user's name and email
+    $student->user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+    ]);
+
+
+    // Redirect or return a response
+    return to_route('student.index')->with('message', 'Student updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.
