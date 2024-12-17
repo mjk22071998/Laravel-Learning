@@ -70,4 +70,11 @@ This will generate all following
 
 ## Hidden fields
 
-hidden fields are not returned by server
+Hidden fields are not returned by server. To implement this in Laravel, you can use the following code in your Model:
+
+```php
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+```

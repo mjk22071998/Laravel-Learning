@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = User::where('role', 'student')->get();
+        $students = Student::all();
         return view('student.index', ['students' => $students]);
     }
 

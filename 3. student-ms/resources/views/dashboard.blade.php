@@ -3,40 +3,40 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <table class="w-full text-center border border-gray-900">
-                        <tr class="bg-gray-900 text-gray-100 border-b border-gray-900">
-                            <th class="border-r border-gray-900">
+                    <x-table>
+                        <x-table-header-row>
+                            <th class="border border-gray-900">
                                 Entity
                             </th>
-                            <th>
+                            <th class="border border-gray-900">
                                 Quantity
                             </th>
-                        </tr>
+                        </x-table-header-row>
                         <tr>
-                            <td class="border-r border-gray-900">
+                            <td class="border border-gray-900">
                                 Students
                             </td>
-                            <td>
+                            <td class="border border-gray-900">
                                 {{ $studentCount }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="border-r border-gray-900">
+                            <td class="border border-gray-900">
                                 Classes
                             </td>
-                            <td>
+                            <td class="border border-gray-900">
                                 {{ $classCount }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="border-r border-gray-900">
+                            <td class="border border-gray-900">
                                 Subjects
                             </td>
-                            <td>
+                            <td class="border border-gray-900">
                                 {{ $subjectCount }}
                             </td>
                         </tr>
-                    </table>
+                    </x-table>
                 </div>
             </div>
         </div>

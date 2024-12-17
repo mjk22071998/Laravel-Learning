@@ -18,20 +18,20 @@
                         @if (count($students) < 1)
                             <p class="text-gray-900">No students found.</p>
                         @else
-                            <table>
-                                <tr>
-                                    <th>Student ID</th>
-                                    <th>Student Name</th>
-                                    <th>Student Email</th>
-                                </tr>
+                            <x-table>
+                                <x-table-header-row>
+                                    <th class="border border-gray-900">Student ID</th>
+                                    <th class="border border-gray-900">Student Name</th>
+                                    <th class="border border-gray-900">Student Email</th>
+                                </x-table-header-row>
                                 @foreach ($students as $student)
                                     <tr>
-                                        <td>{{ $student->id }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->email }}</td>
+                                        <td class="border border-gray-900">{{ $student->user->name }}</td>
+                                        <td class="border border-gray-900">{{ $student->user->email }}</td>
+                                        <td class="border border-gray-900">{{ $student->id }}</td>
                                     </tr>
                                 @endforeach
-                            </table>
+                            </x-table>
                         @endif
                     </div>
                 </div>
