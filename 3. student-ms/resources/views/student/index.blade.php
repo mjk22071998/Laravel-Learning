@@ -23,12 +23,28 @@
                                     <th class="border border-gray-900">Student ID</th>
                                     <th class="border border-gray-900">Student Name</th>
                                     <th class="border border-gray-900">Student Email</th>
+                                    <th class="border border-gray-900">Actions</th>
                                 </x-table-header-row>
                                 @foreach ($students as $student)
                                     <tr>
+                                        <td class="border border-gray-900">{{ $student->id }}</td>
                                         <td class="border border-gray-900">{{ $student->user->name }}</td>
                                         <td class="border border-gray-900">{{ $student->user->email }}</td>
-                                        <td class="border border-gray-900">{{ $student->id }}</td>
+                                        <td class="border border-gray-900">
+                                            <!-- Edit Button -->
+                                            <a href="{{ route('student.edit', $student) }}">
+                                                <x-primary-button>Edit</x-primary-button>
+                                            </a>
+
+                                            <!-- Delete Button -->
+                                            <form action="{{ route('student.destroy', $student) }}" method="POST"
+                                                style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-danger-button type="submit"
+                                                    onclick="return confirm('Are you sure you want to delete this student?')">Delete</x-danger-button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </x-table>
