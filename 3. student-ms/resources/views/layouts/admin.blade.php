@@ -52,7 +52,7 @@
                 <x-side-nav-link :href="route('student.index')" :active="str_contains(request()->route()->getName(), 'student')">
                     {{ __('Students') }}
                 </x-side-nav-link>
-                <x-side-nav-link :href="route('dashboard')" :active="str_contains(request()->route()->getName(), 'subject')">
+                <x-side-nav-link :href="route('subject.index')" :active="str_contains(request()->route()->getName(), 'subject')">
                     {{ __('Subjects') }}
                 </x-side-nav-link>
                 <x-side-nav-link :href="route('dashboard')" :active="str_contains(request()->route()->getName(), 'class')">

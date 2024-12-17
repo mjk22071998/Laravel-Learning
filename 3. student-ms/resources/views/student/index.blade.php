@@ -9,7 +9,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <span class="flex justify-between items-center">
-                        <h1 class="text-3xl font-bold text-gray-900">Students</h1>
+                        <h1 class="text-3xl font-extrabold text-gray-900">Students</h1>
                         <a href="{{ route('student.create') }}">
                             <x-primary-button type="button">New Student</x-primary-button>
                         </a>

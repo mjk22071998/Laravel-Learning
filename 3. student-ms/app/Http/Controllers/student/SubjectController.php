@@ -30,7 +30,11 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:50',
+        ]);
+        Subject::create($request->all());
+        return to_route('subject.index')->with('message','Subject Created');
     }
 
     /**
