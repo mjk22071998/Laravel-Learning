@@ -11,7 +11,7 @@
                             @method('post')
                             <x-input-label for="name" :value="__('Subject Name')" />
                             <x-text-input id="name" class="block mt-1 flex-1" placeholder="Enter subject name"
-                                type="text" name="name" :value="old('name')" required autofocus
+                                type="text" name="name" required autofocus
                                 autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             <x-primary-button>Create Subject</x-primary-button>
@@ -29,13 +29,13 @@
                                 </x-table-header-row>
                                 @foreach ($subjects as $subject)
                                     <tr>
-                                        <td class="border border-gray-900">{{ $subject->id }}</td>
-                                        <td class="border border-gray-900">{{ $subject->name }}</td>
+                                        <td id="subjectID" class="border border-gray-900">{{ $subject->id }}</td>
+                                        <td id="subjectName" contenteditable="false" class="border border-gray-900">
+                                            {{ $subject->name }}
+                                        </td>
                                         <td class="border border-gray-900">
                                             <!-- Edit Button -->
-                                            <a href="{{ route('subject.edit', $subject) }}">
-                                                <x-primary-button>Edit</x-primary-button>
-                                            </a>
+                                            <x-primary-button id="editBtn">Edit</x-primary-button>
 
                                             <!-- Delete Button -->
                                             <form action="{{ route('subject.destroy', $subject) }}" method="POST"
@@ -55,4 +55,9 @@
             </div>
         </div>
     </div>
+    <script>
+        function editSubject() {
+
+        }
+    </script>
 </x-admin-panel>

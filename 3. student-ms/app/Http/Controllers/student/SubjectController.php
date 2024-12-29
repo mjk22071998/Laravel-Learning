@@ -34,7 +34,7 @@ class SubjectController extends Controller
             'name' => 'required|string|max:50',
         ]);
         Subject::create($request->all());
-        return to_route('subject.index')->with('message','Subject Created');
+        return redirect()->back()->with('message','Subject Created');
     }
 
     /**
@@ -66,6 +66,7 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        $subject->delete();
+        return redirect()->back()->with('message', 'Subject Deleted');
     }
 }
