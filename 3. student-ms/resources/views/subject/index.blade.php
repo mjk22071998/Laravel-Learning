@@ -11,8 +11,7 @@
                             @method('post')
                             <x-input-label for="name" :value="__('Subject Name')" />
                             <x-text-input id="name" class="block mt-1 flex-1" placeholder="Enter subject name"
-                                type="text" name="name" required autofocus
-                                autocomplete="name" />
+                                type="text" name="name" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             <x-primary-button>Create Subject</x-primary-button>
                         </form>
@@ -30,7 +29,9 @@
                                 @foreach ($subjects as $subject)
                                     <tr>
                                         <td id="subjectID" class="border border-gray-900">{{ $subject->id }}</td>
-                                        <td id="subjectName" contenteditable="false" class="border border-gray-900">
+                                        <td id="subjectName" contenteditable="false" class="border border-gray-900"
+                                            data-id="{{ $subject->id }}" ondblclick="makeEditable(this)"
+                                            onblur="saveChanges(this)" onkeypress="handleEnter(event, this)">
                                             {{ $subject->name }}
                                         </td>
                                         <td class="border border-gray-900">

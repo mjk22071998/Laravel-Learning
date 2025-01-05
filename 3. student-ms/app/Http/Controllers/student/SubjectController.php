@@ -56,9 +56,22 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject)
+    public function update(Request $request, int $subjectId)
     {
-        //
+        // Validate the input
+    $request->validate([
+        'name' => 'required|string|max:50',
+    ]);
+
+    // Find the subject and update it
+    $subject = Subject::findOrFail($subjectId);
+    $subject->name = $request->input('name');
+
+    if ($subject->save()) {
+        return response()->json(['message' => 'Subject updated successfully.'], 200);
+    }
+
+    return response()->json(['message' => 'Failed to update subject.'], 500);
     }
 
     /**
