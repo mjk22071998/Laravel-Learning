@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('class', ClassController::class);
+    Route::resource('classs', ClassController::class);
     Route::resource('student', StudentController::class);
     Route::resource('subject', SubjectController::class);
 });

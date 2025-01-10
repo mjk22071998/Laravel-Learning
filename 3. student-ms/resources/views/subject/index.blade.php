@@ -31,7 +31,7 @@
                                         <td id="subjectID" class="border border-gray-900">{{ $subject->id }}</td>
                                         <td id="subjectName" contenteditable="false" class="border border-gray-900"
                                             data-id="{{ $subject->id }}" ondblclick="makeEditable(this)"
-                                            onblur="saveChanges(this)" onkeypress="handleEnter(event, this)">
+                                            onblur="saveChanges(this, 'subject')" onkeypress="handleEnter(event, this, 'subject')">
                                             {{ $subject->name }}
                                         </td>
                                         <td class="border border-gray-900">
@@ -56,9 +56,5 @@
             </div>
         </div>
     </div>
-    <script>
-        function editSubject() {
-
-        }
-    </script>
+    <div id="toast-container"></div>
 </x-admin-panel>

@@ -17,20 +17,20 @@ window.makeEditable = (element) => {
     element.classList.add('bg-yellow-100'); // Highlight the editable cell
 };
 
-window.handleEnter = (event, element) => {
+window.handleEnter = (event, element, model) => {
     if (event.key === "Enter") {
         event.preventDefault(); // Prevent newline in contenteditable
         console.log("Enter key handled");
-        window.saveChanges(element);
+        window.saveChanges(element, model);
     }
 };
 
-window.saveChanges = async (element) => {
-    const subjectId = element.getAttribute('data-id'); // Fetch the subject ID
+window.saveChanges = async (element, model) => {
+    const itemId = element.getAttribute('data-id'); // Fetch the model ID
     const originalContent = element.dataset.originalContent || element.innerText.trim();
     const updatedContent = element.innerText.trim();
 
-    console.log(`${subjectId}, ${updatedContent}, ${originalContent}`); // Debugging line
+    console.log(`${itemId}, ${updatedContent}, ${originalContent}`); // Debugging line
 
     // Prevent saving if there's no change
     if (originalContent === updatedContent) {
@@ -41,52 +41,39 @@ window.saveChanges = async (element) => {
     }
 
     try {
-        axios.put(`/subject/${subjectId}`, { name: updatedContent })
+        axios.put(`/${model}/${itemId}`, { name: updatedContent })
             .then(response => {
                 if (response.status === 200) {
-                    // Successfully saved changes
                     console.log("Changes saved successfully");
 
-                    // Make the content non-editable again
                     element.contentEditable = "false";
                     element.classList.remove('bg-yellow-100');
 
-                    // Show success toast
-                    showToast('Subject updated successfully!', 'success');
-
-                    // Update the stored original content with the new content
+                    showToast(`${model.charAt(0).toUpperCase() + model.slice(1)} updated successfully!`, 'success');
                     element.dataset.originalContent = updatedContent; // Update the stored original content
                 } else {
-                    // If the response status is not 200, handle it as an error
-                    console.error("Failed to save changes");
                     throw new Error('Update failed');
                 }
             })
             .catch(error => {
                 console.error(error.response?.data?.message || error.message);
 
-                // Revert changes on error
                 element.innerText = originalContent;
                 element.contentEditable = "false";
                 element.classList.remove('bg-yellow-100');
 
-                // Show error toast
-                showToast('Failed to update subject. Please try again.', 'error');
+                showToast(`Failed to update ${model}. Please try again.`, 'error');
             });
     } catch (error) {
         console.error(error);
 
-        // Revert changes on error
         element.innerText = originalContent;
         element.contentEditable = "false";
         element.classList.remove('bg-yellow-100');
 
-        // Show error toast
-        showToast('Failed to update subject. Please try again.', 'error');
+        showToast(`Failed to update ${model}. Please try again.`, 'error');
     }
-
 };
-
 
 window.showToast = (message, type) => {
     const toast = document.createElement('div');
