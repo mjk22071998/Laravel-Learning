@@ -5,6 +5,8 @@ namespace App\Http\Controllers\student;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\ClassModel;
+use App\Models\Subject;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,35 +27,45 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('student.create');
+        $classes = ClassModel::all(); // get all classes
+        $subjects = Subject::all();
+        return view('student.create', ['classes' => $classes, 'subjects' => $subjects]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    // Validate the incoming request
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+        'class_id' => 'required|exists:class_models,id',
+        'subjects' => 'required|array',
+        'subjects.*' => 'exists:subjects,id',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'student'
-        ]);
+    // Create a new user for the student
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => bcrypt($validated['password']),
+    ]);
 
-        $user->sendEmailVerificationNotification();
+    // Create a new student linked to the user
+    $student = Student::create([
+        'user_id' => $user->id,
+        'class_id' => $validated['class_id'],
+    ]);
 
-        $student = Student::create([
-            'user_id' => $user->id,
-            'class_id' => null
-        ]);
-        return to_route('student.index')->with('message', 'Student created');
-    }
+    // Sync the subjects to the student
+    $student->subjects()->sync($validated['subjects']);
+
+    return redirect()->route('student.index')->with('success', 'Student created successfully.');
+}
+
 
     /**
      * Display the specified resource.
