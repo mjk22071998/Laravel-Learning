@@ -10,6 +10,10 @@ class PagesController extends Controller
         return view('pages.about');
     }
 
+    public function getContact(){
+        return view('pages.contact');
+    }
+
     public function getIndex(){
         return view('pages.welcome');
     }

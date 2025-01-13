@@ -14,9 +14,9 @@
 </head>
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-    <div class="bg-gray-50 text-gray-800 dark:bg-black dark:text-white/50">
+    <div class="bg-slate-50 text-slate-800 dark:bg-black dark:text-white/50">
         <div class="relative min-h-screen flex flex-col items-center selection:bg-[#FF2D20] selection:text-white">
-            <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+            <div class="relative w-full px-6">
                 <header class="flex items-center justify-between py-6 px-4 sm:px-6 lg:px-8">
                     <!-- Left Section: Logo, App Name, and Links -->
                     <div class="flex items-center space-x-6">
@@ -29,19 +29,26 @@
 
                         <!-- Navigation Links -->
                         <nav class="flex space-x-4">
-                            <a href="{{ url('/') }}"
+                            <a href="{{ route('home') }}"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
                                     transition hover:text-black/70 focus:outline-none 
                                     focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
                                     dark:focus-visible:ring-white">
                                 Home
                             </a>
-                            <a href="{{ url('/about') }}"
+                            <a href="{{ route('about') }}"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
                                     transition hover:text-black/70 focus:outline-none 
                                     focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
                                     dark:focus-visible:ring-white">
                                 About Us
+                            </a>
+                            <a href="{{ route('contact') }}"
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
+                                    transition hover:text-black/70 focus:outline-none 
+                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
+                                    dark:focus-visible:ring-white">
+                                Contact Us
                             </a>
                         </nav>
                     </div>
