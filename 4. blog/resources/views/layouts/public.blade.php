@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,28 +17,72 @@
     <div class="bg-gray-50 text-gray-800 dark:bg-black dark:text-white/50">
         <div class="relative min-h-screen flex flex-col items-center selection:bg-[#FF2D20] selection:text-white">
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class="grid grid-cols-2 items-center gap-2 pt-6">
-                    <div class="flex flex-row justify-normal items-center">
-                        <x-application-logo class="block h-9 w-auto fill-current text-slate-900 dark:text-gray-200" />
-                        <div class="p-6 text-xl font-bold">{{ config('app.name') }}</div>
+                <header class="flex items-center justify-between py-6 px-4 sm:px-6 lg:px-8">
+                    <!-- Left Section: Logo, App Name, and Links -->
+                    <div class="flex items-center space-x-6">
+                        <!-- Logo and App Name -->
+                        <div class="flex items-center space-x-2">
+                            <x-application-logo
+                                class="block h-9 w-auto fill-current text-slate-900 dark:text-gray-200" />
+                            <div class="text-xl font-bold">{{ config('app.name') }}</div>
+                        </div>
+
+                        <!-- Navigation Links -->
+                        <nav class="flex space-x-4">
+                            <a href="{{ url('/') }}"
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
+                                    transition hover:text-black/70 focus:outline-none 
+                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
+                                    dark:focus-visible:ring-white">
+                                Home
+                            </a>
+                            <a href="{{ url('/about') }}"
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
+                                    transition hover:text-black/70 focus:outline-none 
+                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
+                                    dark:focus-visible:ring-white">
+                                About Us
+                            </a>
+                        </nav>
                     </div>
-                    <div class="flex flex-row justify-end items-center">
-                        <a href="{{ url('/') }}"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
-                            transition hover:text-black/70 focus:outline-none 
-                            focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
-                            dark:focus-visible:ring-white">
-                            Home
-                        </a>
-                        <a href="{{ url('/about') }}"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
-                            transition hover:text-black/70 focus:outline-none 
-                            focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
-                            dark:focus-visible:ring-white">
-                            About Us
-                        </a>
+
+                    <!-- Right Section: "My Account" Dropdown -->
+                    <div class="relative">
+                        <button id="dropdown-toggle"
+                            class="inline-flex items-center px-4 py-2 bg-white text-black border border-gray-300 
+            rounded-md hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
+                            My Account
+                            <svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="dropdown-menu"
+                            class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 
+                                rounded-md shadow-lg hidden dark:bg-gray-800 dark:border-gray-600">
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                                    dark:text-gray-200 dark:hover:bg-gray-700">
+                                View Profile
+                            </a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                                    dark:text-gray-200 dark:hover:bg-gray-700">
+                                Settings
+                            </a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
+                                    dark:text-gray-200 dark:hover:bg-gray-700">
+                                Logout
+                            </a>
+                        </div>
                     </div>
                 </header>
+
 
                 <main class="mt-6 w-full h-full flex-grow">
                     {{ $slot }}
