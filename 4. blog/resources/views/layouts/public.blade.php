@@ -29,65 +29,35 @@
 
                         <!-- Navigation Links -->
                         <nav class="flex space-x-4">
-                            <a href="{{ route('home') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
-                                    transition hover:text-black/70 focus:outline-none 
-                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
-                                    dark:focus-visible:ring-white">
-                                Home
-                            </a>
-                            <a href="{{ route('about') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
-                                    transition hover:text-black/70 focus:outline-none 
-                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
-                                    dark:focus-visible:ring-white">
-                                About Us
-                            </a>
-                            <a href="{{ route('contact') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent 
-                                    transition hover:text-black/70 focus:outline-none 
-                                    focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80
-                                    dark:focus-visible:ring-white">
-                                Contact Us
-                            </a>
+                            @foreach ([['href' => route('home'), 'label' => 'Home'], ['href' => route('about'), 'label' => 'About Us'], ['href' => route('contact'), 'label' => 'Contact Us']] as $link)
+                                <x-nav-link :href="$link['href']" :label="$link['label']" />
+                            @endforeach
                         </nav>
                     </div>
 
-                    <!-- Right Section: "My Account" Dropdown -->
-                    <div class="relative">
-                        <button id="dropdown-toggle"
-                            class="inline-flex items-center px-4 py-2 bg-white text-black border border-gray-300 
-            rounded-md hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400">
-                            My Account
-                            <svg class="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 text-sm">
+                                My Account
+                                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
 
-                        <!-- Dropdown Menu -->
-                        <div id="dropdown-menu"
-                            class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 
-                                rounded-md shadow-lg hidden dark:bg-gray-800 dark:border-gray-600">
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                                    dark:text-gray-200 dark:hover:bg-gray-700">
-                                View Profile
-                            </a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                                    dark:text-gray-200 dark:hover:bg-gray-700">
-                                Settings
-                            </a>
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 
-                                    dark:text-gray-200 dark:hover:bg-gray-700">
-                                Logout
-                            </a>
-                        </div>
-                    </div>
+                        <x-slot name="content">
+                            <x-dropdown-link :href="'#'">
+                                Profile
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="'#'">
+                                Log Out
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+
+
                 </header>
 
 
