@@ -1,6 +1,6 @@
 <x-public-master>
-    <div class="max-w-2xl mx-auto p-6 bg-slate-200 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Contact Us</h2>
+    <div class="max-w-2xl mx-auto p-6 bg-slate-200 rounded-lg shadow-lg mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Create Post</h2>
 
         <form action="#" method="POST">
             <!-- Name -->
