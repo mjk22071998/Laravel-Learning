@@ -2,14 +2,14 @@
     <div class="max-w-2xl mx-auto p-6 bg-slate-200 rounded-lg shadow-lg mb-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">Contact Us</h2>
 
-        <form action="#" method="POST">
+        <form action="{{ route('post.store') }}" method="POST">
             @csrf
             @method('post')
-            <!-- Name -->
+            <!-- Post Title -->
             <x-input name="title" id="title" type="text" label="Post Title" />
 
-            <!-- Message -->
-            <x-multiline-input name="body" id="body" rows="10" label="Your post Body" />
+            <!-- Post Body -->
+            <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100" />
 
             <!-- Submit Button -->
             <div class="mb-4">
