@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use \Exception;
 
 class PostController extends Controller
 {
@@ -28,18 +29,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //Validating data
-        $validated = $request->validate([
-            'title' => 'required|max:100',
-            'body' => 'required',
-        ]);
+        try {
+            // Validating data
+            $validated = $request->validate([
+                'title' => 'required|max:100',
+                'body' => 'required',
+            ]);
 
-        //Storing in database
-        $post = new Post();
-        $post->title = $validated['title'];
-        $post->body = $validated['body'];
-        $post->save();
-        return redirect()->route('post.store',$post->id)->with('success', 'Post created successfully');
+            // Storing in database
+            $post = new Post();
+            $post->title = $validated['title'];
+            $post->body = $validated['body'];
+            $post->save();
+
+            // Redirect to the post show page with success message
+            return redirect()->route('post.show', $post->id)->with('success', 'Post created successfully');
+
+        } catch (Exception $e) {
+            // Returning the actual exception message
+            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -47,7 +56,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::find($id);
+        return view("posts.show", compact('post'));
     }
 
     /**
