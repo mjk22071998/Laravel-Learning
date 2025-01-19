@@ -1,4 +1,13 @@
 <x-public-master>
+    @if (session('error'))
+        <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
+            {{ session('error') }}
+        </div>
+    @elseif (session('success'))
+        <div class="bg-green-300 text-green-900 p-4 rounded-lg mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
     {{-- Welcome Jumbotron --}}
     <div class="p-5 mx-10 mb-4 bg-slate-200 rounded-lg">
         <div class="container  py-5">
@@ -8,10 +17,6 @@
                 fresh insights, engaging stories, and thought-provoking ideas. The developer is excited to share
                 valuable content that sparks curiosity and inspires you to explore more with every post!
             </p>
-            <button
-                class="px-6 py-3 bg-slate-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
-                Popular Post
-            </button>
         </div>
     </div>
     {{-- Main Content --}}
@@ -20,21 +25,11 @@
         <div class="col-span-8 p-4">
             <h2 class="text-2xl font-bold">Latest Posts</h2>
 
-            <x-post title="Post Title"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ut velit gravida tincidunt. Curabitur gravida lorem vel libero feugiat, vel viverra orci vestibulum."
-                buttonLabel="Read Full Article" />
-            <x-post title="Post Title"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ut velit gravida tincidunt. Curabitur gravida lorem vel libero feugiat, vel viverra orci vestibulum."
-                buttonLabel="Read Full Article" />
-            <x-post title="Post Title"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ut velit gravida tincidunt. Curabitur gravida lorem vel libero feugiat, vel viverra orci vestibulum."
-                buttonLabel="Read Full Article" />
-            <x-post title="Post Title"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ut velit gravida tincidunt. Curabitur gravida lorem vel libero feugiat, vel viverra orci vestibulum."
-                buttonLabel="Read Full Article" />
-            <x-post title="Post Title"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel purus ut velit gravida tincidunt. Curabitur gravida lorem vel libero feugiat, vel viverra orci vestibulum."
-                buttonLabel="Read Full Article" />
+            @foreach ($posts as $post)
+                <x-post title="{{ $post->title }}" 
+                    content="{{ Str::limit(strip_tags($post->body), 100, '...') }}"
+                    buttonLabel="Read Full Article" class="mt-2" :href="route('post.show', $post->id)"/>
+            @endforeach
 
 
 

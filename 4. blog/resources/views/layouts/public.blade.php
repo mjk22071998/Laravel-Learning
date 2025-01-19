@@ -1,3 +1,5 @@
+@props(['title' => config('app.name') ])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -5,7 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name') }}</title>
+    <title>{{ $title }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,8 +31,13 @@
 
                         <!-- Navigation Links -->
                         <nav class="flex space-x-4">
-                            @foreach ([['href' => route('home'), 'label' => 'Home'], ['href' => route('about'), 'label' => 'About Us'], ['href' => route('contact'), 'label' => 'Contact Us']] as $link)
-                                <x-nav-link :href="$link['href']" :label="$link['label']" />
+                            @foreach ([
+                                    ['href' => route('home'), 'label' => 'Home'], 
+                                    ['href' => route('about'), 'label' => 'About Us'], 
+                                    ['href' => route('contact'), 'label' => 'Contact Us'], 
+                                    ['href' => route('post.index'), 'label' => 'All Posts']
+                                ] as $link)
+                                    <x-nav-link :href="$link['href']" :label="$link['label']" />
                             @endforeach
                         </nav>
                     </div>

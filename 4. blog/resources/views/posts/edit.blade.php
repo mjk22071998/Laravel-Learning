@@ -11,36 +11,32 @@
 
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-8 p-4 overflow-auto">
-            <div class="mx-10 p-6 bg-slate-200 rounded-lg shadow-lg mb-6">
+            <form action="{{ route('post.store') }}" method="POST">
+                @csrf
+                @method('post')
                 <!-- Post Title -->
-                <h1 class="text-3xl font-bold text-slate-800 mb-4">{{ $post->title }}</h1>
+                <x-input name="title" id="title" type="text" label="Post Title" value="{{ $post->title }}"/>
             
                 <!-- Post Body -->
-                <div class="text-lg text-slate-800 mb-6">
-                    <p>{{ $post->body }}</p>
-                </div>
-            
-                <!-- Post Author and Date (Optional) -->
-                <div class="flex justify-between text-sm text-slate-600">
-                    <span>Posted on: {{ $post->created_at->format('F j, Y, H:i:s') }}</span>
-                </div>
-            </div>
+                <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100" value="{{ $post->body }}"/>
+            </form>
         </div>
         <div class="col-span-4 p-4 sticky top-4">
             <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 <dt class="font-medium text-slate-900">Created at</dt>
                 <dd class="text-slate-700">{{$post->created_at->format('F j, Y, h:i:s A') }}</dd>
-            
+
                 <dt class="font-medium text-slate-900">Last Updated at</dt>
                 <dd class="text-slate-700">{{ $post->updated_at->format('F j, Y, h:i:s A') }}</dd>
             </dl>
             <div class="grid grid-cols-2 gap-2 mt-4">
-                <x-button href="{{ route('post.edit', $post->id)}}" size="regular" label="Edit" class="w-full text-center"/>
-                <form action="{{ route('post.destroy', $post->id) }}" method="POST">
+                <x-button href="{{ route('post.show', $post->id)}}" size="regular" label="Cancel"
+                    class="w-full text-center" />
+                <form action="{{ route('post.update', $post->id) }}" method="POST">
                     @csrf
-                    @method('DELETE')
-                    <x-button size="regular" label="Delete" type="submit" class="w-full"
-                        onclick="return confirm('Are you sure you want to delete this post?')" />
+                    @method('PUT')
+                    <x-button size="regular" label="Update" type="submit" class="w-full"
+                        onclick="return confirm('Are you sure you want to Update this post?')" />
                 </form>
             </div>
         </div>

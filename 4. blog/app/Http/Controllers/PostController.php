@@ -13,7 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('posts.index', compact('posts'));
     }
 
     /**
@@ -58,8 +59,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::find($id);
-        return view("posts.show", compact('post'));
+            $post = Post::findOrFail ($id);
+            return view("posts.show", compact('post'));
     }
 
     /**
@@ -67,7 +68,8 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::findOrFail ($id);
+        return view("posts.edit", compact('post'));
     }
 
     /**
@@ -75,14 +77,51 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            // Validating data
+            $validated = $request->validate([
+                'title' => 'required|max:100',
+                'body' => ['required', function ($attribute, $value, $fail) {
+                    $wordCount = str_word_count(strip_tags($value));
+                    if ($wordCount < 100) {
+                        $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
+                    }
+                }],
+            ]);
+
+            // Find the post by ID or fail if not found
+            $post = Post::findOrFail($id);
+
+            // Use mass assignment to update the post
+            $post->update($validated);
+
+            // Redirect to the post show page with success message
+            return redirect()->route('post.show', $post->id)->with('success', 'Post updated successfully');
+        } catch (Exception $e) {
+            // Returning the actual exception message
+            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Find the post by ID or fail if not found
+            $post = Post::findOrFail($id);
+
+            // Delete the post
+            $post->delete();
+
+            // Redirect to the posts list with success message
+            return redirect()->route('post.index')->with('success', 'Post deleted successfully');
+        } catch (Exception $e) {
+            // Returning the actual exception message
+            return back()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+        }
     }
+
 }

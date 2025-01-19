@@ -1,4 +1,13 @@
 <x-public-master>
+    @if (session('error'))
+        <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
+            {{ session('error') }}
+        </div>
+    @elseif (session('success'))
+        <div class="bg-green-300 text-green-900 p-4 rounded-lg mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
     <h1 class="text-3xl font-bold text-center mb-6">About Us</h1>
     {{-- <h1 class="heading">About Us</h1> --}}
     <section>

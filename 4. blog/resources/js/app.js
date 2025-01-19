@@ -68,11 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const minWords = parseInt(textarea.dataset.minWords, 10);
         const wordCountIndicator = document.getElementById(`${textarea.id}-word-count`);
 
-        textarea.addEventListener("input", function () {
-            // Calculate current word count
-            const wordCount = this.value.trim().split(/\s+/).filter((word) => word.length > 0).length;
+        // Function to update the word count indicator
+        function updateWordCount() {
+            const wordCount = textarea.value.trim().split(/\s+/).filter((word) => word.length > 0).length;
 
-            // Update word count indicator
             if (wordCountIndicator) {
                 if (wordCount < minWords) {
                     wordCountIndicator.textContent = `Min: ${minWords} words (Current: ${wordCount})`;
@@ -84,6 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     wordCountIndicator.classList.add("text-green-500");
                 }
             }
-        });
+        }
+
+        // Add input event listener for live word count updates
+        textarea.addEventListener("input", updateWordCount);
+
+        // Trigger the update function when the page loads to set initial word count
+        updateWordCount(); // This will update the word count on page load
+
     });
 });
