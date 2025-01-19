@@ -98,8 +98,9 @@ class PostController extends Controller
             // Redirect to the post show page with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post updated successfully');
         } catch (Exception $e) {
+            dd($e);
             // Returning the actual exception message
-            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+            // return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
 
