@@ -18,7 +18,7 @@
 
             <!-- Submit Button -->
             <div class="mb-4">
-                <x-button size="regular" label="Create Post" type="submit" extraClass="mx-auto" />
+                <x-button size="regular" label="Create Post" type="submit" class="mx-auto" />
             </div>
         </form>
     </div>

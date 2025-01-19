@@ -33,23 +33,25 @@ class PostController extends Controller
             // Validating data
             $validated = $request->validate([
                 'title' => 'required|max:100',
-                'body' => 'required',
+                'body' => ['required', function ($attribute, $value, $fail) {
+                    $wordCount = str_word_count(strip_tags($value));
+                    if ($wordCount < 100) {
+                        $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
+                    }
+                }],
             ]);
 
-            // Storing in database
-            $post = new Post();
-            $post->title = $validated['title'];
-            $post->body = $validated['body'];
-            $post->save();
+            // Using mass assignment to create a post
+            $post = Post::create($validated);
 
             // Redirect to the post show page with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post created successfully');
-
         } catch (Exception $e) {
             // Returning the actual exception message
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Display the specified resource.
