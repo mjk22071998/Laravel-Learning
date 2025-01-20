@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use \Exception;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -42,7 +43,21 @@ class PostController extends Controller
                 }],
             ]);
 
-            // Using mass assignment to create a post
+            // Generate a slug from the title
+            $slug = Str::slug($validated['title']);
+
+            // Check if the slug already exists in the database
+            $slugCount = Post::where('slug', 'like', "$slug%")->count();
+
+            // If the slug exists, append a number to make it unique
+            if ($slugCount > 0) {
+                $slug = $slug . '-' . ($slugCount + 1);
+            }
+
+            // Add the slug to the validated data
+            $validated['slug'] = $slug;
+
+            // Using mass assignment to create a post with the slug
             $post = Post::create($validated);
 
             // Redirect to the post show page with success message
@@ -57,25 +72,34 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-            $post = Post::findOrFail ($id);
+    public function show(string $slug)
+    {   try{
+            $post = Post::where('slug', $slug)->firstOrFail();
             return view("posts.show", compact('post'));
+        } catch (Exception $e) {
+            // Returning the actual exception message
+            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        $post = Post::findOrFail ($id);
-        return view("posts.edit", compact('post'));
+        try {
+            $post = Post::where('slug', $slug)->firstOrFail();
+            return view("posts.edit", compact('post'));
+        } catch (Exception $e) {
+            // Returning the actual exception message
+            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $slug)
     {
         try {
             // Validating data
@@ -90,29 +114,42 @@ class PostController extends Controller
             ]);
 
             // Find the post by ID or fail if not found
-            $post = Post::findOrFail($id);
+            $post = Post::where('slug', $slug)->firstOrFail();
 
-            // Use mass assignment to update the post
-            $post->update($validated);
+            // Generate the new slug
+            $slug = Str::slug($validated['title']);
+
+            // Check if the slug already exists in the database and make it unique
+            $slugCount = Post::where('slug', 'like', "$slug%")->where('id', '<>', $post->id)->count();
+            if ($slugCount > 0) {
+                $slug = $slug . '-' . ($slugCount + 1);
+            }
+
+            // Update the post with the new title, body, and slug
+            $post->update([
+                'title' => $validated['title'],
+                'body' => $validated['body'],
+                'slug' => $slug, // Updating the slug
+            ]);
 
             // Redirect to the post show page with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post updated successfully');
         } catch (Exception $e) {
-            dd($e);
             // Returning the actual exception message
-            // return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
+
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
         try {
             // Find the post by ID or fail if not found
-            $post = Post::findOrFail($id);
+            $post = Post::where('slug', $slug)->firstOrFail();
 
             // Delete the post
             $post->delete();

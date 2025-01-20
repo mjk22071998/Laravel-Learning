@@ -11,7 +11,7 @@ class Post extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['title', 'body'];
+    protected $fillable = ['title', 'body', 'slug'];
 
     protected $guarded = [];
 

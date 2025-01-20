@@ -2,23 +2,31 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
- */
 class PostFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = Post::class;
+
+    public function definition()
     {
+        $title = $this->faker->sentence(6); // Generates a random title
+
+        // Generate a slug from the title
+        $slug = Str::slug($title);
+
+        // Check if the slug exists and modify it if necessary
+        $slugCount = Post::where('slug', 'like', "$slug%")->count();
+        if ($slugCount > 0) {
+            $slug = $slug . '-' . ($slugCount + 1);
+        }
+
         return [
-            'title' => fake()->text(20), // Fake sentence for the title
-            'body' => fake()->realText(2000), // Fake paragraph for the body
+            'title' => $title,
+            'slug' => $slug,
+            'body' => $this->faker->paragraph(10),
         ];
     }
 }
