@@ -72,9 +72,9 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $slug)
+    public function show(string $id)
     {   try{
-            $post = Post::where('slug', $slug)->firstOrFail();
+            $post = Post::findOrFail($id);
             return view("posts.show", compact('post'));
         } catch (Exception $e) {
             // Returning the actual exception message
@@ -85,10 +85,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $slug)
+    public function edit(string $id)
     {
         try {
-            $post = Post::where('slug', $slug)->firstOrFail();
+            $post = Post::findOrFail($id);
             return view("posts.edit", compact('post'));
         } catch (Exception $e) {
             // Returning the actual exception message
@@ -99,7 +99,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $slug)
+    public function update(Request $request, string $id)
     {
         try {
             // Validating data
@@ -114,7 +114,7 @@ class PostController extends Controller
             ]);
 
             // Find the post by ID or fail if not found
-            $post = Post::where('slug', $slug)->firstOrFail();
+            $post = Post::findOrFail($id);
 
             // Generate the new slug
             $slug = Str::slug($validated['title']);
@@ -145,11 +145,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $slug)
+    public function destroy(string $id)
     {
         try {
             // Find the post by ID or fail if not found
-            $post = Post::where('slug', $slug)->firstOrFail();
+            $post = Post::findOrFail($id);
 
             // Delete the post
             $post->delete();
