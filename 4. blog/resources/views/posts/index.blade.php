@@ -18,28 +18,35 @@
         </div>
     </div>
     <div class="m-4 p-4">
-        <table class="co table-auto border-collapse border border-slate-400 w-full">
-            <thead>
-                <tr>
-                    <th class="border border-slate-300 px-4 py-2">#</th>
-                    <th class="border border-slate-300 px-4 py-2">title</th>
-                    <th class="border border-slate-300 px-4 py-2">body</th>
-                    <th class="border border-slate-300 px-4 py-2">Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($posts as $post)
+        @if($posts->isEmpty())
+            <p>No posts available</p>
+        @else
+            <table class="co table-auto border-collapse border border-slate-400 w-full">
+                <thead>
                     <tr>
-                        <td class="border border-slate-300 px-4 py-2">{{ $post->id }}</td>
-                        <td class="border border-slate-300 px-4 py-2">{{ $post->title }}</td>
-                        <td class="border border-slate-300 px-4 py-2">{{ Str::limit($post->body, 50) }}</td>
-                        <td class="border border-slate-300 px-4 py-2">{{ $post->created_at->diffForHumans() }}</td>
-                        <td class="border border-slate-300 px-4 py-2">
-                            <x-button href="{{ route('post.show', $post->id) }}" 
-                                size="regular" label="View Full Post" class="m-4 text-center"/>
-                        </td>
+                        <th class="border border-slate-300 px-4 py-2">#</th>
+                        <th class="border border-slate-300 px-4 py-2">title</th>
+                        <th class="border border-slate-300 px-4 py-2">body</th>
+                        <th class="border border-slate-300 px-4 py-2">Created At</th>
                     </tr>
-                @endforeach
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($posts as $post)
+                        <tr>
+                            <td class="border border-slate-300 px-4 py-2">{{ $post->id }}</td>
+                            <td class="border border-slate-300 px-4 py-2">{{ $post->title }}</td>
+                            <td class="border border-slate-300 px-4 py-2">{{ Str::limit($post->body, 50) }}</td>
+                            <td class="border border-slate-300 px-4 py-2">{{ $post->created_at->diffForHumans() }}</td>
+                            <td class="border border-slate-300 px-4 py-2">
+                                <x-button href="{{ route('post.show', $post->id) }}" 
+                                    size="regular" label="View Full Post" class="m-4 text-center"/>
+                            </td>
+                        </tr>
+                    @endforeach
+            </table>
+        @endif
+    </div>
+    <div class="p-6">
+        {{ $posts->links() }}
     </div>
 </x-public-master>

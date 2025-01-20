@@ -25,10 +25,10 @@
         <div class="col-span-4 p-4 sticky top-4">
             <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 <dt class="font-medium text-slate-900">Created at</dt>
-                <dd class="text-slate-700">{{$post->created_at->format('F j, Y, h:i:s A') }}</dd>
+                <dd class="text-slate-700">{{$post->created_at->diffForHumans() }}</dd>
 
                 <dt class="font-medium text-slate-900">Last Updated at</dt>
-                <dd class="text-slate-700">{{ $post->updated_at->format('F j, Y, h:i:s A') }}</dd>
+                <dd class="text-slate-700">{{ $post->updated_at->diffForHumans() }}</dd>
             </dl>
             <div class="grid grid-cols-2 gap-2 mt-4">
                 <x-button href="{{ route('post.show', $post->id)}}" size="regular" label="Cancel"
