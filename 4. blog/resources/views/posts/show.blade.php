@@ -29,10 +29,10 @@
         <div class="col-span-4 p-4 sticky top-4">
             <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                 <dt class="font-medium text-slate-900">URL</dt>
-                <dd class="text-slate-700">{{ url($post->slug )}}</dd>
+                <dd class="text-slate-700"><a href='{{ route('blog.single', $post->slug) }}'>{{ route('blog.single', $post->slug) }}</a> </dd>
 
                 <dt class="font-medium text-slate-900">Created at</dt>
-                <dd class="text-slate-700">{{$post->created_at->diffForHumans() }}</dd>
+                <dd class="text-slate-700">{{ $post->created_at->diffForHumans() }}</dd>
             
                 <dt class="font-medium text-slate-900">Last Updated at</dt>
                 <dd class="text-slate-700">{{ $post->updated_at->diffForHumans() }}</dd>

@@ -28,7 +28,7 @@
             @foreach ($posts as $post)
                 <x-post title="{{ $post->title }}" 
                     content="{{ Str::limit(strip_tags($post->body), 100, '...') }}"
-                    buttonLabel="Read Full Article" class="mt-2" :href="route('post.show', $post->id)"/>
+                    buttonLabel="Read Full Article" class="mt-2" :href="route('blog.single', $post->slug)"/>
             @endforeach
 
 

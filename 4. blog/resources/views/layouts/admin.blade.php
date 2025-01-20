@@ -1,4 +1,4 @@
-@props(['title' => config('app.name') ])
+@props(['title' => config('app.name')])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -33,11 +33,11 @@
                         <nav class="flex space-x-4">
                             @foreach ([
                                     ['href' => route('home'), 'label' => 'Home'], 
+                                    ['href' => route('blog.index'), 'label' => 'Blog'],
                                     ['href' => route('about'), 'label' => 'About Us'], 
-                                    ['href' => route('contact'), 'label' => 'Contact Us'], 
-                                    ['href' => route('post.index'), 'label' => 'All Posts']
+                                    ['href' => route('contact'), 'label' => 'Contact Us']
                                 ] as $link)
-                                    <x-nav-link :href="$link['href']" :label="$link['label']" />
+                                        <x-nav-link :href="$link['href']" :label="$link['label']"/>
                             @endforeach
                         </nav>
                     </div>
@@ -55,6 +55,9 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            <x-dropdown-link :href="route('post.index')">
+                                All Posts
+                            </x-dropdown-link>
                             <x-dropdown-link :href="'#'">
                                 Profile
                             </x-dropdown-link>

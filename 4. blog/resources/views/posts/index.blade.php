@@ -39,7 +39,7 @@
                             <td class="border border-slate-300 px-4 py-2">{{ $post->created_at->diffForHumans() }}</td>
                             <td class="border border-slate-300 px-4 py-2">
                                 <x-button href="{{ route('post.show', $post->id) }}" 
-                                    size="regular" label="View Full Post" class="m-4 text-center"/>
+                                    size="regular" label="View Full Post" class="text-center"/>
                             </td>
                         </tr>
                     @endforeach
