@@ -1,4 +1,4 @@
-<x-public-master>
+<x-admin-master>
     @if (session('error'))
         <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
             {{ session('error') }}
@@ -31,4 +31,4 @@
         </form>
     </div>
 
-</x-public-master>
+</x-admin-master>

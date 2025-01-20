@@ -1,4 +1,4 @@
-<x-public-master>
+<x-admin-master>
     @if (session('error'))
         <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
             {{ session('error') }}
@@ -60,4 +60,4 @@
                 href="https://github.com/mjk22071998" target="_blank" class="text-[#FF2D20]">GitHub profile</a>.
         </p>
     </section>
-</x-public-master>
+</x-admin-master>

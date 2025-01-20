@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class PublicMaster extends Component
+class AdminMaster extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class PublicMaster extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.public');
+        return view('layouts.admin');
     }
 }

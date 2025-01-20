@@ -1,4 +1,4 @@
-<x-public-master>
+<x-admin-master>
     @if (session('error'))
         <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
             {{ session('error') }}
@@ -48,4 +48,4 @@
             document.getElementById('update-form').submit();
         });
     </script>
-</x-public-master>
+</x-admin-master>
