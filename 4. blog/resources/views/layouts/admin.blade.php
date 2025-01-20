@@ -31,45 +31,60 @@
 
                         <!-- Navigation Links -->
                         <nav class="flex space-x-4">
-                            @foreach ([
-                                    ['href' => route('home'), 'label' => 'Home'], 
-                                    ['href' => route('blog.index'), 'label' => 'Blog'],
-                                    ['href' => route('about'), 'label' => 'About Us'], 
-                                    ['href' => route('contact'), 'label' => 'Contact Us']
-                                ] as $link)
-                                        <x-nav-link :href="$link['href']" :label="$link['label']"/>
+                            @foreach ([['href' => route('home'), 'label' => 'Home'], ['href' => route('blog.index'), 'label' => 'Blog'], ['href' => route('about'), 'label' => 'About Us'], ['href' => route('contact'), 'label' => 'Contact Us']] as $link)
+                                <x-nav-link :href="$link['href']" :label="$link['label']" />
                             @endforeach
                         </nav>
                     </div>
 
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 text-sm">
-                                My Account
-                                <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </x-slot>
+                    <!-- Authentication Dropdown or Buttons -->
+                    @auth
+                        <!-- If authenticated, show the dropdown with "My Account" -->
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-3 py-2 text-sm">
+                                    My Account
+                                    <svg class="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </x-slot>
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('post.index')">
-                                All Posts
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="'#'">
-                                Profile
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="'#'">
-                                Log Out
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('post.index')">
+                                    All Posts
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="'#'">
+                                    Profile
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Log Out
+                                </x-dropdown-link>
 
+                                <!-- Form for logout (hidden) -->
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
 
+                            </x-slot>
+                        </x-dropdown>
+                    @else
+                        <!-- If not authenticated, show login and signup buttons -->
+                        <div class="space-x-4">
+                            <a href="{{ route('login') }}" 
+                                class="inline-block px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-lg">
+                                Login
+                            </a>
+                            <a href="{{ route('register') }}"
+                                class="inline-block px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-lg">
+                                Sign Up
+                            </a>
+                        </div>
+                    @endauth
                 </header>
-
 
                 <main class="mt-6 w-full h-full flex-grow">
                     {{ $slot }}

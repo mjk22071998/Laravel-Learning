@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(15);
+        $posts = request()->user()->posts()->paginate(15);
         return view('posts.index', compact('posts'));
     }
 
@@ -57,6 +57,8 @@ class PostController extends Controller
             // Add the slug to the validated data
             $validated['slug'] = $slug;
 
+            // Associate the post with the currently authenticated user
+            $validated['user_id'] = request()->user()->id;  // Add the user_id
             // Using mass assignment to create a post with the slug
             $post = Post::create($validated);
 
@@ -73,12 +75,22 @@ class PostController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {   try{
+    {
+        try {
+            // Find the post by ID or fail if not found
             $post = Post::findOrFail($id);
+
+            // Check if the post belongs to the authenticated user
+            if ($post->user_id !== request()->user()->id) {
+                // If the post doesn't belong to the user, redirect with an error message
+                return redirect()->route('post.index')->with('error', 'You are not authorized to view this post.');
+            }
+
+            // If the post belongs to the user, display it
             return view("posts.show", compact('post'));
         } catch (Exception $e) {
-            // Returning the actual exception message
-            return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
+            // Handle any exceptions
+            return back()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
 
@@ -89,6 +101,10 @@ class PostController extends Controller
     {
         try {
             $post = Post::findOrFail($id);
+            if ($post->user_id !== request()->user()->id) {
+                // If the post doesn't belong to the user, redirect with an error message
+                return redirect()->route('post.index')->with('error', 'You are not authorized to edit this post.');
+            }
             return view("posts.edit", compact('post'));
         } catch (Exception $e) {
             // Returning the actual exception message

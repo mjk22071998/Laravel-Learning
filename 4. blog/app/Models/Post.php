@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-    /**
-     * The attributes that are mass assignable.
-     */
-    protected $fillable = ['title', 'body', 'slug'];
+    
+    protected $fillable = ['title', 'body', 'slug','user_id'];
 
-    protected $guarded = [];
-
+    // Define the inverse relationship: Each post belongs to one user
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

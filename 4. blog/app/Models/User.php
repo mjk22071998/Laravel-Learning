@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Define the one-to-many relationship: A user can have multiple posts
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
