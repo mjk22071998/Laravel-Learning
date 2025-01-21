@@ -31,6 +31,12 @@
                 <dt class="font-medium text-slate-900">URL</dt>
                 <dd class="text-slate-700"><a href='{{ route('blog.single', $post->slug) }}'>{{ route('blog.single', $post->slug) }}</a> </dd>
 
+                <dt class="font-medium text-slate-900">Category</dt>
+                <dd class="text-slate-700">{{ $post->category->name ?? 'No Category Assigned' }}</dd>
+
+                <dt class="font-medium text-slate-900">Created By</dt>
+                <dd class="text-slate-700">{{ $post->user->name ?? 'No Category Assigned' }}</dd>
+
                 <dt class="font-medium text-slate-900">Created at</dt>
                 <dd class="text-slate-700">{{ $post->created_at->diffForHumans() }}</dd>
             

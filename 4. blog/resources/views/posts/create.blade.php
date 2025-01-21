@@ -20,6 +20,19 @@
             <!-- Post Body -->
             <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100" />
 
+            <!-- Category Selection -->
+            <div class="mb-4">
+                <label for="cat_id" class="block font-medium text-gray-700 mb-2">Select Category</label>
+                <select name="cat_id" id="cat_id"
+                    class="block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required>
+                    <option value="" disabled selected>Choose a category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <!-- Submit Button -->
             <div class="mb-4">
                 <x-button size="regular" label="Create Post" type="submit" class="block mx-auto" />

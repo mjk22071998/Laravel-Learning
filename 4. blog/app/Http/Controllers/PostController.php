@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 use \Exception;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all(); // get all categories
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -41,6 +43,7 @@ class PostController extends Controller
                         $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
                     }
                 }],
+                'cat_id' => 'required|exists:categories,id', // Ensure category ID exists
             ]);
 
             // Generate a slug from the title
@@ -54,21 +57,20 @@ class PostController extends Controller
                 $slug = $slug . '-' . ($slugCount + 1);
             }
 
-            // Add the slug to the validated data
+            // Add the slug and associate the post with the authenticated user
             $validated['slug'] = $slug;
+            $validated['user_id'] = $request->user()->id;
 
-            // Associate the post with the currently authenticated user
-            $validated['user_id'] = request()->user()->id;  // Add the user_id
-            // Using mass assignment to create a post with the slug
+            // Create the post
             $post = Post::create($validated);
 
-            // Redirect to the post show page with success message
+            // Redirect with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post created successfully');
         } catch (Exception $e) {
-            // Returning the actual exception message
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
+
 
 
     /**
@@ -127,36 +129,44 @@ class PostController extends Controller
                         $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
                     }
                 }],
+                'cat_id' => 'required|exists:categories,id', // Ensure category ID exists
             ]);
 
-            // Find the post by ID or fail if not found
+            // Find the post by ID
             $post = Post::findOrFail($id);
 
-            // Generate the new slug
-            $slug = Str::slug($validated['title']);
+            // Check if the title is changed
+            if ($post->title !== $validated['title']) {
+                // Generate the new slug
+                $slug = Str::slug($validated['title']);
 
-            // Check if the slug already exists in the database and make it unique
-            $slugCount = Post::where('slug', 'like', "$slug%")->where('id', '<>', $post->id)->count();
-            if ($slugCount > 0) {
-                $slug = $slug . '-' . ($slugCount + 1);
+                // Check if the slug already exists and make it unique
+                $slugCount = Post::where('slug', 'like', "$slug%")->where('id', '<>', $post->id)->count();
+                if ($slugCount > 0) {
+                    $slug = $slug . '-' . ($slugCount + 1);
+                }
+
+                // Update the slug in the validated data
+                $validated['slug'] = $slug;
+            } else {
+                // Keep the existing slug if the title hasn't changed
+                $validated['slug'] = $post->slug;
             }
 
-            // Update the post with the new title, body, and slug
+            // Update the post
             $post->update([
                 'title' => $validated['title'],
                 'body' => $validated['body'],
-                'slug' => $slug, // Updating the slug
+                'slug' => $validated['slug'], // Use the updated or existing slug
+                'cat_id' => $validated['cat_id'], // Update the category ID
             ]);
 
-            // Redirect to the post show page with success message
+            // Redirect with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post updated successfully');
         } catch (Exception $e) {
-            // Returning the actual exception message
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
-
-
 
     /**
      * Remove the specified resource from storage.
