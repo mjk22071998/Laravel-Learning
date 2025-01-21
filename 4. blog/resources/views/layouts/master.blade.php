@@ -25,7 +25,7 @@
                         <!-- Logo and App Name -->
                         <div class="flex items-center space-x-2">
                             <x-application-logo
-                                class="block h-9 w-auto fill-current text-slate-900 dark:text-gray-200" />
+                                class="block h-9 w-auto fill-current text-slate-900 dark:text-slate-200" />
                             <div class="text-xl font-bold">{{ config('app.name') }}</div>
                         </div>
 
@@ -56,7 +56,7 @@
                                 <x-dropdown-link :href="route('post.index')">
                                     Posts
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="route('categories.index')">
+                                <x-dropdown-link :href="route('category.index')">
                                     Categories
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('logout')"

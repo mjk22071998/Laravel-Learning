@@ -41,7 +41,7 @@ class AuthenticationController extends Controller
             // Log the exception
             Log::error('Login Error: ' . $e->getMessage());
 
-            return back()->with('error', 'An unexpected error occurred. Please try again later.');
+            return back()->with('error', 'An unexpected error occurred. Please try again later. Error: ' . $e->getMessage());
         }
     }
 
@@ -76,12 +76,12 @@ class AuthenticationController extends Controller
             // Handle database-related exceptions
             Log::error('Database Error during Registration: ' . $qe->getMessage());
 
-            return back()->with('error', 'A database error occurred. Please try again later.');
+            return back()->with('error', 'A database error occurred. Please try again later. Error: ' . $qe->getMessage());
         } catch (Exception $e) {
             // Log any other unexpected exceptions
             Log::error('Registration Error: ' . $e->getMessage());
 
-            return back()->with('error', 'An unexpected error occurred. Please try again later.');
+            return back()->with('error', 'An unexpected error occurred. Please try again later. Error: ' . $e->getMessage());
         }
     }
 
