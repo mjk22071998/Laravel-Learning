@@ -1,4 +1,4 @@
-<x-admin-master>
+<x-master>
     <div class="max-w-lg mx-auto p-6 bg-slate-200 rounded-lg shadow-lg mb-6">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">Forgot Your Password?</h2>
 
@@ -14,4 +14,4 @@
             </div>
         </form>
     </div>
-</x-admin-master>
+</x-master>

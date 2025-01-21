@@ -54,10 +54,10 @@
 
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('post.index')">
-                                    All Posts
+                                    Posts
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="'#'">
-                                    Profile
+                                <x-dropdown-link :href="route('categories.index')">
+                                    Categories
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

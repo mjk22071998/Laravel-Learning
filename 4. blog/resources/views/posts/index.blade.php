@@ -1,4 +1,4 @@
-<x-admin-master title="All Posts">
+<x-master title="All Posts">
     @if (session('error'))
         <div class="bg-red-300 text-red-800 m-10 p-4 rounded">
             {{ session('error') }}

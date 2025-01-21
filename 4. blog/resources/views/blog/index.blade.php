@@ -1,4 +1,4 @@
-<x-admin-master>
+<x-master>
     <div class="grid grid-cols-12 gap-4 my-6">
         <div class="col-span-12 lg:col-span-6 xl:col-span-4 2xl:col-span-3">
             <div class="text-4xl font-black">Blog</div>
@@ -18,4 +18,4 @@
     <div class="p-6">
         {{ $posts->links() }}
     </div>
-</x-admin-master>
+</x-master>
