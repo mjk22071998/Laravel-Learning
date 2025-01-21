@@ -32,7 +32,10 @@ class AuthenticationController extends Controller
                 'password' => 'required',
             ]);
 
-            if (Auth::attempt($request->only('email', 'password'))) {
+            // Check if remember me checkbox is checked
+            $remember = $request->has('remember') ? true : false;
+
+            if (Auth::attempt($request->only('email', 'password'), $remember)) {
                 return redirect()->intended(route('/'))->with('success', 'Logged in successfully.');
             }
 

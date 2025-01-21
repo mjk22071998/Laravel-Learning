@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 
 Route::get('/', [PagesController::class, 'getIndex'])->name('home');
 Route::get('/about', [PagesController::class, 'getAbout'])->name('about');
@@ -40,5 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/post', PostController::class);
 
     // Category Routes
-    Route::resource('/category', CategoryController::class, ['except'=>'create']);
+    Route::resource('/category', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
+    
+    // Tag Routes
+    Route::resource('/tag', TagController::class)->only(['index', 'store', 'update', 'destroy']);
+
 });

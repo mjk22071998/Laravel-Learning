@@ -59,6 +59,9 @@
                                 <x-dropdown-link :href="route('category.index')">
                                     Categories
                                 </x-dropdown-link>
+                                <x-dropdown-link :href="route('tag.index')">
+                                    Tags
+                                </x-dropdown-link>
                                 <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Log Out
