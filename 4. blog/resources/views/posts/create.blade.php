@@ -22,7 +22,7 @@
 
             <!-- Category Selection -->
             <div class="mb-4">
-                <label for="cat_id" class="block font-medium text-gray-700 mb-2">Select Category</label>
+                <label for="cat_id" class="block font-medium text-slate-800 mb-2">Select Category</label>
                 <select name="cat_id" id="cat_id"
                     class="block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     required>
@@ -31,6 +31,17 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+            </div>
+            
+            {{-- Multiselect input using select2 --}}
+            <div class="mb-4">
+                <label for="tags" class="block font-medium text-slate-800 mb-2">Select Tags (max 5)</label>
+                <select id="tags" name="tags[]" multiple class="js-example-basic-multiple w-full border-gray-300 rounded-lg">
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select>
+                <p id="tag-limit-message" class="text-sm text-red-500 hidden mt-1">You can select a maximum of 5 tags.</p>
             </div>
 
             <!-- Submit Button -->

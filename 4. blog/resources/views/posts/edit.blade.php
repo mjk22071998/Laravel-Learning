@@ -20,6 +20,27 @@
                 <!-- Post Body -->
                 <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100"
                     value="{{ $post->body }}" />
+
+                {{-- Categories --}}
+                <select name="cat_id" id="cat_id"
+                    class="block w-full rounded border-gray-300 shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    required>
+                    <option value="" disabled>Choose a category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ $category->id == $post->cat_id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                {{-- Tags --}}
+                <select id="tags" name="tags[]" class="js-example-basic-multiple" multiple="multiple" required>
+                    @foreach ($tags as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, $post->tags->pluck('id')->toArray()) ? 'selected' : '' }}>
+                            {{ $tag->name }}
+                        </option>
+                    @endforeach
+                </select>
             </form>
         </div>
         <div class="col-span-4 p-4 sticky top-4">
@@ -32,7 +53,7 @@
 
                 <dt class="font-medium text-slate-900">Created By</dt>
                 <dd class="text-slate-700">{{ $post->user->name ?? 'No Category Assigned' }}</dd>
-                
+
                 <dt class="font-medium text-slate-900">Created at</dt>
                 <dd class="text-slate-700">{{$post->created_at->diffForHumans() }}</dd>
 
@@ -42,16 +63,18 @@
             <div class="grid grid-cols-2 gap-2 mt-4">
                 <x-button href="{{ route('post.show', $post->id)}}" size="regular" label="Cancel"
                     class="w-full text-center" />
-                <x-button id="update-button" size="regular" label="Update" class="w-full"
-                    onclick="return confirm('Are you sure you want to Update this post?')" />
+                <x-button id="update-button" size="regular" label="Update" class="w-full" />
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('update-button').addEventListener('click', function () {
-            // Trigger the form submission
-            document.getElementById('update-form').submit();
+        document.getElementById('update-button').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission on button click
+
+            if (confirm('Are you sure you want to Update this post?')) {
+                document.getElementById('update-form').submit(); // Explicitly submit the form
+            }
         });
     </script>
 </x-master>

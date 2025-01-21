@@ -37,9 +37,20 @@
                 <dt class="font-medium text-slate-900">Created By</dt>
                 <dd class="text-slate-700">{{ $post->user->name ?? 'No Category Assigned' }}</dd>
 
+                <dt class="font-medium text-slate-900">Tags</dt>
+                <dd class="text-slate-700">
+                    @forelse ($post->tags as $tag)
+                        <span class="inline-block bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-full mr-2 mb-2">
+                            {{ $tag->name }}
+                        </span>
+                    @empty
+                        <span class="text-gray-500">No tags assigned</span>
+                    @endforelse
+                </dd>
+
                 <dt class="font-medium text-slate-900">Created at</dt>
                 <dd class="text-slate-700">{{ $post->created_at->diffForHumans() }}</dd>
-            
+
                 <dt class="font-medium text-slate-900">Last Updated at</dt>
                 <dd class="text-slate-700">{{ $post->updated_at->diffForHumans() }}</dd>
             </dl>

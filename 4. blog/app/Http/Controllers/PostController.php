@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use \Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -25,7 +27,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all(); // get all categories
-        return view('posts.create', compact('categories'));
+        $tags = Tag::all(); // get all tags
+        return view('posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -43,33 +46,36 @@ class PostController extends Controller
                         $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
                     }
                 }],
-                'cat_id' => 'required|exists:categories,id', // Ensure category ID exists
+                'cat_id' => 'required|exists:categories,id',
+                'tags' => 'array|max:5',
+                'tags.*' => 'exists:tags,id',
             ]);
 
-            // Generate a slug from the title
+            // Generate slug and create post (as shown in the original code)
             $slug = Str::slug($validated['title']);
-
-            // Check if the slug already exists in the database
             $slugCount = Post::where('slug', 'like', "$slug%")->count();
-
-            // If the slug exists, append a number to make it unique
             if ($slugCount > 0) {
                 $slug = $slug . '-' . ($slugCount + 1);
             }
-
-            // Add the slug and associate the post with the authenticated user
             $validated['slug'] = $slug;
             $validated['user_id'] = $request->user()->id;
 
             // Create the post
             $post = Post::create($validated);
 
+            // Attach tags to the post
+            if ($request->has('tags')) {
+                $post->tags()->attach($request->tags);
+            }
+
             // Redirect with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post created successfully');
         } catch (Exception $e) {
+            // Redirect with error message
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
+
 
 
 
@@ -102,12 +108,14 @@ class PostController extends Controller
     public function edit(string $id)
     {
         try {
+            $categories = Category::all(); // get all categories
+            $tags = Tag::all(); // get all tags
             $post = Post::findOrFail($id);
             if ($post->user_id !== request()->user()->id) {
                 // If the post doesn't belong to the user, redirect with an error message
                 return redirect()->route('post.index')->with('error', 'You are not authorized to edit this post.');
             }
-            return view("posts.edit", compact('post'));
+            return view("posts.edit", compact('post', 'categories', 'tags'));
         } catch (Exception $e) {
             // Returning the actual exception message
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
@@ -130,7 +138,10 @@ class PostController extends Controller
                     }
                 }],
                 'cat_id' => 'required|exists:categories,id', // Ensure category ID exists
+                'tags' => 'array|max:5', // Ensure the tags are an array and limited to 5
+                'tags.*' => 'exists:tags,id', // Ensure each tag ID exists in the tags table
             ]);
+            Log::debug($validated);
 
             // Find the post by ID
             $post = Post::findOrFail($id);
@@ -153,13 +164,20 @@ class PostController extends Controller
                 $validated['slug'] = $post->slug;
             }
 
-            // Update the post
+            // Update the post fields (title, body, slug, cat_id)
             $post->update([
                 'title' => $validated['title'],
                 'body' => $validated['body'],
-                'slug' => $validated['slug'], // Use the updated or existing slug
-                'cat_id' => $validated['cat_id'], // Update the category ID
+                'slug' => $validated['slug'],
+                'cat_id' => $validated['cat_id'],
             ]);
+
+            // Update tags if provided
+            if ($request->has('tags')) {
+                // Sync the selected tags with the post
+                $post->tags()->sync($request->tags);
+                Log::debug($post->tags);
+            }
 
             // Redirect with success message
             return redirect()->route('post.show', $post->id)->with('success', 'Post updated successfully');
@@ -167,6 +185,7 @@ class PostController extends Controller
             return back()->withInput()->with('error', 'Something went wrong. Error: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
