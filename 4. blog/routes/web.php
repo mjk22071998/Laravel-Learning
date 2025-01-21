@@ -16,6 +16,10 @@ Route::get('/contact', [PagesController::class, 'getContact'])->name('contact');
 Route::get('/blog/{slug}', [BlogController::class, 'getSingle'])->name('blog.single');
 Route::get('/blog', [BlogController::class, 'getIndex'])->name('blog.index');
 
+// Adding comment route
+Route::post('/{postId}/comment', [BlogController::class, 'postComment'])->name('comment.store');
+Route::delete('/comment/{commentId}', [BlogController::class, 'deleteComment'])->name('comment.delete');
+
 // Grouping routes that use the guest middleware
 Route::middleware(['guest'])->group(function () {
     // AuthenticationController handles login, registration, and password reset
