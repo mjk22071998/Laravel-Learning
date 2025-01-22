@@ -1,12 +1,7 @@
-import './ckeditor5';
 import './bootstrap';
+import './ckeditor5';
 
-import Alpine from 'alpinejs';
-import Choices from 'choices.js';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+import Choices from 'choices.js';;
 
 document.addEventListener("DOMContentLoaded", function () {
 
