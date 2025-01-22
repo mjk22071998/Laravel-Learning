@@ -11,15 +11,16 @@
 
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-8 p-4 overflow-auto">
-            <form id="update-form" action="{{ route('post.update', $post->id) }}" method="POST">
+            <form id="postForm" action="{{ route('post.update', $post->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <!-- Post Title -->
                 <x-input name="title" id="title" type="text" label="Post Title" value="{{ $post->title }}" />
 
                 <!-- Post Body -->
-                <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100"
-                    value="{{ $post->body }}" />
+                <x-ck-editor initialContent="{{$post->body}}" name="body" id="body" label="Your Post Body" />
+                {{-- <x-multiline-input name="body" id="body" rows="10" label="Your Post Body" minWords="100"
+                    value="{{ $post->body }}" /> --}}
 
                 {{-- Categories --}}
                 <select name="cat_id" id="cat_id"
@@ -63,18 +64,8 @@
             <div class="grid grid-cols-2 gap-2 mt-4">
                 <x-button href="{{ route('post.show', $post->id)}}" size="regular" label="Cancel"
                     class="w-full text-center" />
-                <x-button id="update-button" size="regular" label="Update" class="w-full" />
+                <x-button id="submitForm" size="regular" label="Update" class="w-full" />
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('update-button').addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent form submission on button click
-
-            if (confirm('Are you sure you want to Update this post?')) {
-                document.getElementById('update-form').submit(); // Explicitly submit the form
-            }
-        });
-    </script>
 </x-master>

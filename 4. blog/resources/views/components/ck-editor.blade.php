@@ -3,6 +3,7 @@
     'name',
     'id',
     'label',
+    'initialContent',
     'minWords' => null,
     'value' => null
 ])
@@ -28,4 +29,5 @@
 
 <script>
         const LICENSE_KEY = @json($API_KEY);
+        const INITIAL_CONTENT = @json($initialContent);
 </script>

@@ -1,3 +1,8 @@
+const parser = new DOMParser();
+
+const initialContent = INITIAL_CONTENT;
+const decodedContent = parser.parseFromString(initialContent, 'text/html').body.textContent;
+
 const {
 	ClassicEditor,
 	Alignment,
@@ -301,7 +306,8 @@ const editorConfig = {
 	},
 	menuBar: {
 		isVisible: true
-	},
+    },
+    initialData:  decodedContent,
 	placeholder: 'Type or paste your content here!',
 	style: {
 		definitions: [

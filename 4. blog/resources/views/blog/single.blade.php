@@ -3,7 +3,7 @@
         <div class="col-span-10 col-start-2">
             <!-- Post Title and Body -->
             <div class="text-3xl font-bold">{{ $post->title }}</div>
-            <div class="my-4">{{ $post->body }}</div>
+            <div class="my-4">{!! $post->body !!}</div>
 
             <!-- Comment Form -->
             @auth
