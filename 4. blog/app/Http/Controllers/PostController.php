@@ -39,13 +39,8 @@ class PostController extends Controller
         try {
             // Validating data
             $validated = $request->validate([
-                'title' => 'required|max:100',
-                'body' => ['required', function ($attribute, $value, $fail) {
-                    $wordCount = str_word_count(strip_tags($value));
-                    if ($wordCount < 100) {
-                        $fail("The $attribute must have at least 100 words. Current word count: $wordCount.");
-                    }
-                }],
+                'title' => 'required|string|max:100',
+                'body' => 'required|string',
                 'cat_id' => 'required|exists:categories,id',
                 'tags' => 'array|max:5',
                 'tags.*' => 'exists:tags,id',

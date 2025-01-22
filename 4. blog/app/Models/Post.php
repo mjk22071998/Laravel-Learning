@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Mews\Purifier\Casts\CleanHtml;
 
 class Post extends Model
 {
     use HasFactory;
     
     protected $fillable = ['title', 'body', 'slug', 'user_id', 'cat_id'];
+
+    protected $casts = [
+        'body'=> CleanHtml::class
+    ];
 
     // Define the inverse relationship: Each post belongs to one user
     public function user()
