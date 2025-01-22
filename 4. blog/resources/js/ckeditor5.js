@@ -1,7 +1,12 @@
 const parser = new DOMParser();
-
-const initialContent = INITIAL_CONTENT;
-const decodedContent = parser.parseFromString(initialContent, 'text/html').body.textContent;
+try {
+	const initialContent = INITIAL_CONTENT;
+	const decodedContent = parser.parseFromString(initialContent, 'text/html').body.textContent;
+} catch ($e) {
+	const initialContent = "";
+	const decodedContent = "";
+	console.error ($e);
+}
 
 const {
 	ClassicEditor,
