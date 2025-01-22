@@ -4,7 +4,8 @@ This repository contains all the projects I built during my journey of learning 
 
 ## Tech Stack
 
-- **Laravel**: The PHP framework used for building robust backend systems.
+- **Laravel 11**: The PHP framework used for building robust backend systems.
+- **Blade**: Template engine by Laravel for front end.
 - **HTML**: Markup language for structuring web pages.
 - **CSS**: Used for styling and layout design.
 - **JavaScript**: Programming language for adding dynamic behavior to web pages.

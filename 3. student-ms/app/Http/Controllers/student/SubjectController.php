@@ -18,14 +18,6 @@ class SubjectController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('subject.create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -38,40 +30,24 @@ class SubjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Subject $subject)
-    {
-        return view('subject.show', ['subject' => $subject]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Subject $subject)
-    {
-        return view('subject.edit', ['subject' => $subject]);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, int $subjectId)
     {
         // Validate the input
-    $request->validate([
-        'name' => 'required|string|max:50',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:50',
+        ]);
 
-    // Find the subject and update it
-    $subject = Subject::findOrFail($subjectId);
-    $subject->name = $request->input('name');
+        // Find the subject and update it
+        $subject = Subject::findOrFail($subjectId);
+        $subject->name = $request->input('name');
 
-    if ($subject->save()) {
-        return response()->json(['message' => 'Subject updated successfully.'], 200);
-    }
+        if ($subject->save()) {
+            return response()->json(['message' => 'Subject updated successfully.'], 200);
+        }
 
-    return response()->json(['message' => 'Failed to update subject.'], 500);
+        return response()->json(['message' => 'Failed to update subject.'], 500);
     }
 
     /**
