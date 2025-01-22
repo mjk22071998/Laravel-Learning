@@ -1,11 +1,20 @@
 const parser = new DOMParser();
+
+let initialContent;
+let decodedContent;
 try {
-	const initialContent = INITIAL_CONTENT;
-	const decodedContent = parser.parseFromString(initialContent, 'text/html').body.textContent;
-} catch ($e) {
-	const initialContent = "";
-	const decodedContent = "";
-	console.error ($e);
+	initialContent = INITIAL_CONTENT;
+	decodedContent = parser.parseFromString(initialContent, 'text/html').body.textContent;
+} catch (e) {
+	initialContent = "";
+	decodedContent = "";
+}
+
+let license;
+try {
+	license = LICENSE_KEY;
+} catch (e) {
+	license = "";
 }
 
 const {
@@ -97,7 +106,7 @@ const editorConfig = {
         }
     },
     toolbar: {
-        licenseKey: LICENSE_KEY,
+        licenseKey: license,
 		items: [
 			'sourceEditing',
 			'showBlocks',
@@ -288,7 +297,7 @@ const editorConfig = {
 			'resizeImage'
 		]
 	},
-	licenseKey: LICENSE_KEY,
+	licenseKey: license,
 	link: {
 		addTargetToExternalLinks: true,
 		defaultProtocol: 'https://',
@@ -367,35 +376,38 @@ const editorConfig = {
 		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
 	}
 };
+try {
+	ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
+		const wordCount = editor.plugins.get('WordCount');
+		document.querySelector('#editor-word-count').appendChild(wordCount.wordCountContainer);
+		console.log("In ClassicEditor.create");
+		const btn = document.getElementById("submitForm");
+		const form = document.getElementById('postForm');
+		console.log(btn.innerHTML);
+		btn.addEventListener('click', function (event) {
+			console.log("OnSubmit");
+			event.preventDefault();
+			const editorData = editor.getData(); // Get CKEditor content
+			const textarea = document.querySelector('#body'); // Get the hidden textarea by ID
+			textarea.value = editorData; // Set the textarea's value to CKEditor content
+			console.log(editorData)
+			console.log(textarea.value)
 
-ClassicEditor.create(document.querySelector('#editor'), editorConfig).then(editor => {
-	const wordCount = editor.plugins.get('WordCount');
-    document.querySelector('#editor-word-count').appendChild(wordCount.wordCountContainer);
-    console.log("In ClassicEditor.create");
-    const btn = document.getElementById("submitForm");
-    const form = document.getElementById('postForm');
-    console.log(btn.innerHTML);
-    btn.addEventListener('click', function (event) {
-        console.log("OnSubmit");
-        event.preventDefault();
-        const editorData = editor.getData(); // Get CKEditor content
-        const textarea = document.querySelector('#body'); // Get the hidden textarea by ID
-        textarea.value = editorData; // Set the textarea's value to CKEditor content
-        console.log(editorData)
-        console.log(textarea.value)
-
-        // Count the words in the editor
-        const wordCountValue = wordCount.words;
+			// Count the words in the editor
+			const wordCountValue = wordCount.words;
         
-        // Check if the word count is less than 100
-        if (wordCountValue < 100) {
-            // Display an alert or message to the user
-            alert('Your content must have at least 100 words.');
-        } else {
-            // Submit the form
-            form.submit();
-        }
-    });
-    // document.querySelector('#editor-menu-bar').appendChild(editor.ui.view.menuBarView.element);
-	return editor;
-});
+			// Check if the word count is less than 100
+			if (wordCountValue < 100) {
+				// Display an alert or message to the user
+				alert('Your content must have at least 100 words.');
+			} else {
+				// Submit the form
+				form.submit();
+			}
+		});
+		// document.querySelector('#editor-menu-bar').appendChild(editor.ui.view.menuBarView.element);
+		return editor;
+	});
+} catch (error) {
+	//console.error(error);
+}

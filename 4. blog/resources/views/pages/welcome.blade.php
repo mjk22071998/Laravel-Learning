@@ -36,7 +36,7 @@
         </div>
         {{-- Sidebar --}}
         <div class="col-span-4 p-4">
-            <h2 class="text-2xl font-bold">Sidebar</h2>
+            {{-- <h2 class="text-2xl font-bold">Sidebar</h2> --}}
         </div>
     </div>
 
