@@ -16,6 +16,16 @@ class InspectionRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'steering' => filter_var($this->steering, FILTER_VALIDATE_BOOLEAN),
+            'brakes' => filter_var($this->brakes, FILTER_VALIDATE_BOOLEAN),
+            'lights' => filter_var($this->lights, FILTER_VALIDATE_BOOLEAN),
+            'tires' => filter_var($this->tires, FILTER_VALIDATE_BOOLEAN),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -28,13 +38,13 @@ class InspectionRequest extends FormRequest
             'vehicle_id' => 'required|exists:vehicles,id',
             'inspection_date' => 'required|date',
             'steering' => 'required|boolean',
-            'steering_attachment' => 'nullable|file|mimes:jpeg,png,pdf|max:10240', // Max 10MB
+            'steering_attachment' => 'nullable|file|mimes:jpeg,png|max:10240', // Max 10MB
             'brakes' => 'required|boolean',
-            'brakes_attachment' => 'nullable|file|mimes:jpeg,png,pdf|max:10240',
+            'brakes_attachment' => 'nullable|file|mimes:jpeg,png|max:10240',
             'lights' => 'required|boolean',
-            'lights_attachment' => 'nullable|file|mimes:jpeg,png,pdf|max:10240',
+            'lights_attachment' => 'nullable|file|mimes:jpeg,png|max:10240',
             'tires' => 'required|boolean',
-            'tires_attachment' => 'nullable|file|mimes:jpeg,png,pdf|max:10240',
+            'tires_attachment' => 'nullable|file|mimes:jpeg,png|max:10240',
         ];
     }
 
@@ -61,7 +71,7 @@ class InspectionRequest extends FormRequest
     {
         $response = response()->json([
            'success' => false,
-           'message' => $validator->errors()->first()
+           'message' => $validator->errors()
         ],403);
 
         throw new HttpResponseException($response);
