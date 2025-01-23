@@ -100,7 +100,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         try {
             $categories = Category::all(); // get all categories

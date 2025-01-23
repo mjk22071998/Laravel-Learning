@@ -8,7 +8,7 @@
             {{ session('success') }}
         </div>
     @endif
-    {{-- Welcome Jumbotron --}}
+    <!-- Well Come -->
     <div class="p-5 mx-10 mb-4 bg-slate-200 rounded-lg">
         <div class="container  py-5">
             <h1 class="text-4xl font-bold mb-4">Welcome to the blog</h1>
@@ -24,20 +24,14 @@
         {{-- Latest posts --}}
         <div class="col-span-8 p-4">
             <h2 class="text-2xl font-bold">Latest Posts</h2>
-
             @foreach ($posts as $post)
                 <x-post title="{{ $post->title }}" 
                     content="{{ Str::limit(strip_tags($post->body), 100, '...') }}"
                     buttonLabel="Read Full Article" class="mt-2" :href="route('blog.single', $post->slug)"/>
             @endforeach
-
-
-
         </div>
         {{-- Sidebar --}}
         <div class="col-span-4 p-4">
-            {{-- <h2 class="text-2xl font-bold">Sidebar</h2> --}}
         </div>
     </div>
-
 </x-master>
