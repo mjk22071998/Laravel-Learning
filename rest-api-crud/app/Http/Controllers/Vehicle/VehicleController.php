@@ -20,7 +20,7 @@ class VehicleController extends Controller
         return response()->json([
             'success' => true,
             'data' => $vehicles,
-        ]);
+        ],200);
     }
 
     /**
@@ -34,7 +34,7 @@ class VehicleController extends Controller
             'success' => true,
             'message' => 'Vehicle created successfully.',
             'data' => $vehicle,
-        ]);
+        ],200);
     }
 
     /**
@@ -57,7 +57,7 @@ class VehicleController extends Controller
             'success' => true,
             'message' => 'Vehicle updated successfully.',
             'data' => $vehicle,
-        ]);
+        ],200);
     }
 
     /**
@@ -79,6 +79,6 @@ class VehicleController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Vehicle deleted successfully.',
-        ]);
+        ],200);
     }
 }

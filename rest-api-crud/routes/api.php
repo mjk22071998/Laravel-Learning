@@ -25,10 +25,7 @@ Route::post('users/{userId}/assign-vehicle', [UserController::class, 'assignVehi
 Route::get('users/{userId}/assigned-vehicles', [UserController::class, 'getAssignedVehicles']);
 
 // Vehicle routes
-Route::get('vehicles', [VehicleController::class, 'index']);
-Route::post('vehicles', [VehicleController::class, 'store']);
-Route::put('vehicles/{id}', [VehicleController::class, 'update']);
-Route::delete('vehicles/{id}', [VehicleController::class, 'destroy']);
+Route::apiResource('vehicles', VehicleController::class, ['except' => ['show']]);
 
 // Inspection routes
-Route::apiResource('inspections', InspectionController::class);
+Route::apiResource('inspections', InspectionController::class, ['except' => ['show']]);

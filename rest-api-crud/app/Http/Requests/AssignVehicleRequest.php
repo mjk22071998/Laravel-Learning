@@ -40,7 +40,7 @@ class AssignVehicleRequest extends FormRequest
         $response = response()->json([
            'success' => false,
            'message' => $validator->errors()->first()
-        ]);
+        ], 403);
 
         throw new HttpResponseException($response);
     }

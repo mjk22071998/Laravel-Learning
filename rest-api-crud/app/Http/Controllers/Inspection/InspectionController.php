@@ -44,6 +44,7 @@ class InspectionController extends Controller
         $inspection->fill([
             'user_id'=> $request->user_id,
             'vehicle_id'=> $request->vehicle_id,
+            'inspection_date'=> $request->inspection_date,
             'steering'=> $request->steering,
             'steering_attachment' => $data['steering_attachment'],
 
@@ -57,6 +58,7 @@ class InspectionController extends Controller
             'tires_attachment' => $data['tires_attachment'],
 
         ]);
+        $inspection->save();
 
         return response()->json([
             'message' => 'Inspection created successfully.',
