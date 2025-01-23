@@ -17,7 +17,7 @@ class Vehicle extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'vehicle_assignments');
+        return $this->belongsToMany(User::class, 'vehicle_assignment');
     }
 
     public function inspections()
