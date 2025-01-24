@@ -39,26 +39,26 @@ class InspectionController extends Controller
         if ($request->hasFile('tires_attachment')) {
             $data['tires_attachment'] = $request->file('tires_attachment')->store('attachments');
         }
-        
-        $inspection = new Inspection();
-        $inspection->fill([
-            'user_id'=> $request->user_id,
-            'vehicle_id'=> $request->vehicle_id,
-            'inspection_date'=> $request->inspection_date,
-            'steering'=> $request->steering,
-            'steering_attachment' => $data['steering_attachment'],
 
-            'brakes'=> $request->brakes,
-            'brakes_attachment' => $data['brakes_attachment'],
+        $inspection=Inspection::create(
+            [
+                'user_id' => $request->user_id,
+                'vehicle_id' => $request->vehicle_id,
+                'inspection_date' => $request->inspection_date,
+                'steering' => $request->steering,
+                'steering_attachment' => $data['steering_attachment'],
 
-            'lights'=> $request->lights,
-            'lights_attachment' => $data['lights_attachment'],
-            
-            'tires'=> $request->tires,
-            'tires_attachment' => $data['tires_attachment'],
+                'brakes' => $request->brakes,
+                'brakes_attachment' => $data['brakes_attachment'],
 
-        ]);
-        $inspection->save();
+                'lights' => $request->lights,
+                'lights_attachment' => $data['lights_attachment'],
+
+                'tires' => $request->tires,
+                'tires_attachment' => $data['tires_attachment'],
+
+            ]
+        );
 
         return response()->json([
             'message' => 'Inspection created successfully.',
