@@ -12,6 +12,7 @@ class InspectionController extends Controller
 
     public function index(){
         $inspections = Inspection::all();
+        
          return response()->json([
             'message' => 'Inspection retrieved successfully.',
             'inspections' => $inspections
@@ -45,6 +46,7 @@ class InspectionController extends Controller
                 'user_id' => $request->user_id,
                 'vehicle_id' => $request->vehicle_id,
                 'inspection_date' => $request->inspection_date,
+                
                 'steering' => $request->steering,
                 'steering_attachment' => $data['steering_attachment'],
 
@@ -71,11 +73,7 @@ class InspectionController extends Controller
      */
     public function update(InspectionRequest $request, $id)
     {
-        $inspection = Inspection::find($id);
-
-        if (!$inspection) {
-            return response()->json(['message' => 'Inspection not found'], 404);
-        }
+        $inspection = Inspection::findOrFail($id);
 
         $inspection->update($request->all());
 

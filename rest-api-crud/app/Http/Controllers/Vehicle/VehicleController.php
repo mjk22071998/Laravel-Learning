@@ -42,14 +42,7 @@ class VehicleController extends Controller
      */
     public function update(VehicleRequest $request, $id)
     {
-        $vehicle = Vehicle::find($id);
-
-        if (!$vehicle) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vehicle not found.',
-            ], 404);
-        }
+        $vehicle = Vehicle::findOrFail($id);
 
         $vehicle->update($request->all());
 
@@ -65,16 +58,7 @@ class VehicleController extends Controller
      */
     public function destroy($id)
     {
-        $vehicle = Vehicle::find($id);
-
-        if (!$vehicle) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vehicle not found.',
-            ], 404);
-        }
-
-        $vehicle->delete();
+        Vehicle::findOrFail($id)->delete();
 
         return response()->json([
             'success' => true,

@@ -23,25 +23,9 @@ class UserController extends Controller
 
     public function assignVehicle(AssignVehicleRequest $request, $userId)
     {
-        $validated = $request->validate([
-            'vehicle_id' => 'required|exists:vehicles,id',
-        ]);
+        $user = User::findOrFail($userId);
 
-        $user = User::find($userId);
-
-        if (!$user) {
-            return response()->json([
-                'error' => 'User not found',
-            ], 404);
-        }
-
-        $vehicle = Vehicle::find($validated['vehicle_id']);
-
-        if (!$vehicle) {
-            return response()->json([
-                'error' => 'Vehicle not found',
-            ], 404);
-        }
+        $vehicle = Vehicle::findOrFail($user->vehicle_id);
 
         $user->assignedVehicles()->attach($vehicle->id);
 
@@ -52,18 +36,10 @@ class UserController extends Controller
 
     public function getAssignedVehicles($userId)
     {
-        $user = User::find($userId);
-
-        if (!$user) {
-            return response()->json([
-                'error' => 'User not found',
-            ], 404);
-        }
-
-        $vehicles = $user->assignedVehicles;
+        $user = User::findOrFail($userId);
 
         return response()->json([
-            'vehicles' => $vehicles,
+            'vehicles' => $user->assignedVehicles,
         ], 200);
     }
 }
