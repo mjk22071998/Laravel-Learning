@@ -37,10 +37,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Handle exceptions based on their type.
-     *
-     * @param Throwable $e
-     * @param Request $request
-     * @return Response|SymfonyResponse
      */
     protected function handleException(Throwable $e, Request $request)
     {
@@ -65,7 +61,7 @@ class Handler extends ExceptionHandler
         } elseif ($e instanceof RedirectResponse) {
             $statusCode = 302;
             $response['message'] = 'Redirect encountered' . $e->getTargetUrl();
-        }elseif ($e instanceof HttpException) {
+        } elseif ($e instanceof HttpException) {
             $statusCode = $e->getStatusCode();
             $response['message'] = $e->getMessage() ?: 'HTTP error occurred.';
         } else {
@@ -82,9 +78,6 @@ class Handler extends ExceptionHandler
 
     /**
      * Log the exception with appropriate details.
-     *
-     * @param Throwable $e
-     * @param int $statusCode
      */
     protected function logException(Throwable $e, int $statusCode): void
     {
@@ -92,13 +85,6 @@ class Handler extends ExceptionHandler
             'exception' => $e,
             'code' => $statusCode,
         ];
-
-        if ($statusCode >= 500) {
-            logger()->error($e->getMessage(), $context);
-        } elseif ($statusCode >= 400) {
-            logger()->warning($e->getMessage(), $context);
-        } else {
-            logger()->info($e->getMessage(), $context);
-        }
+        logger()->error($e->getMessage(), $context);
     }
 }
