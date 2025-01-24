@@ -18,7 +18,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Getting driver routes
-Route::get('getDrivers', [UserController::class, 'getDrivers']);
+Route::get('get-drivers', [UserController::class, 'getDrivers']);
 
 // Asigning vahicles
 Route::post('users/{userId}/assign-vehicle', [UserController::class, 'assignVehicle']);

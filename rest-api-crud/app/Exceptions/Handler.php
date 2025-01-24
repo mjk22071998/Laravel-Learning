@@ -2,89 +2,89 @@
 
 namespace App\Exceptions;
 
+use Throwable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class Handler extends ExceptionHandler
 {
     protected $dontFlash = [
+        'current_password',
         'password',
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
-    public function register()
+    public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            // Custom logic for reporting exceptions
-        });
-
-        $this->renderable(function (Throwable $e, Request $request) {
-            return $this->handleException($e, $request);
+            logger()->error($e->getMessage());
         });
     }
 
-    /**
-     * Handle exceptions based on their type.
-     */
-    protected function handleException(Throwable $e, Request $request)
+    public function render($request, Throwable $exception)
     {
-        $response = [
-            'success' => false,
-            'message' => 'An error occurred.',
-        ];
-
-        if ($e instanceof ModelNotFoundException) {
-            $response['message'] = 'Resource not found.';
-            $statusCode = 404;
-        } elseif ($e instanceof NotFoundHttpException) {
-            $response['message'] = 'The requested route was not found.';
-            $statusCode = 404;
-        } elseif ($e instanceof AccessDeniedHttpException) {
-            $response['message'] = 'You are not authorized to access this resource.';
-            $statusCode = 403;
-        } elseif ($e instanceof ValidationException) {
-            $response['message'] = 'Validation failed.';
-            $response['errors'] = $e->errors();
-            $statusCode = 422;
-        } elseif ($e instanceof RedirectResponse) {
-            $statusCode = 302;
-            $response['message'] = 'Redirect encountered' . $e->getTargetUrl();
-        } elseif ($e instanceof HttpException) {
-            $statusCode = $e->getStatusCode();
-            $response['message'] = $e->getMessage() ?: 'HTTP error occurred.';
-        } else {
-            $statusCode = 500;
-            $response['message'] = 'Internal server error. Please try again later.';
+        //403 Exception JSON Response
+        if ($exception instanceof AuthorizationException) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], 403);
+        }
+        
+        if ($exception instanceof AuthenticationException) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], 401);
         }
 
-        // Log the exception
-        $this->logException($e, $statusCode);
+        //404 Exception JSON Response
+        if ($exception instanceof NotFoundHttpException) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
 
-        // Return a JSON response
-        return response()->json($response, $statusCode);
-    }
+        //404 Exception JSON Response
+        if ($exception instanceof RouteNotFoundException) {
+            return response()->json([
+                'success' => false,
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
 
-    /**
-     * Log the exception with appropriate details.
-     */
-    protected function logException(Throwable $e, int $statusCode): void
-    {
-        $context = [
-            'exception' => $e,
-            'code' => $statusCode,
-        ];
-        logger()->error($e->getMessage(), $context);
+        //404 Exception JSON Response
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The resource you are looking for could not be found.',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        //302 Exception JSON Response
+        if($exception instanceof RedirectResponse) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Redirect encountered' . $exception->getTargetUrl(),
+            ], 302);
+        }
+
+        //Integrity constraint violation Exception JSON Response
+        if ($exception instanceof QueryException && strpos($exception->getMessage(), 'Integrity constraint violation') !== false) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Integrity constraint violation: Cannot delete or update a parent row.'
+            ], 500);
+        }
+
+        return parent::render($request, $exception);
     }
 }
