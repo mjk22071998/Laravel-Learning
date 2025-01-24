@@ -10,24 +10,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 
 class AuthController extends Controller
 {
     /**
      * Register a new user.
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -48,7 +40,7 @@ class AuthController extends Controller
     /**
      * Login the user.
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         // Validate incoming request
         $validator = Validator::make($request->all(), [
@@ -83,9 +75,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->tokens->each(function ($token) {
-            $token->delete();
-        });
+        $request->user()->tokens->delete();
 
         return response()->json([
             'message' => 'Logged out successfully.',
