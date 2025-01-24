@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Vehicle;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -40,7 +40,7 @@ class AssignVehicleRequest extends FormRequest
         $response = response()->json([
            'success' => false,
            'message' => $validator->errors()->first()
-        ], 403);
+        ], 400);
 
         throw new HttpResponseException($response);
     }

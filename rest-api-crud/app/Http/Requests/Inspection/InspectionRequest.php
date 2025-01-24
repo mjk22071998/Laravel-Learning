@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Inspection;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -72,7 +72,7 @@ class InspectionRequest extends FormRequest
         $response = response()->json([
            'success' => false,
            'message' => $validator->errors()
-        ],403);
+        ],400);
 
         throw new HttpResponseException($response);
     }

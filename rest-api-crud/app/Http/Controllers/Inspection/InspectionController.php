@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Inspection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inspection;
-use App\Http\Requests\InspectionRequest;
+use App\Http\Requests\Inspection\InspectionRequest;
 
 class InspectionController extends Controller
 {

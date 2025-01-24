@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Vehicle;
-use App\Http\Requests\AssignVehicleRequest;
+use App\Http\Requests\Vehicle\AssignVehicleRequest;
 
 
 class UserController extends Controller
