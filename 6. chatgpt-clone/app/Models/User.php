@@ -45,4 +45,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
+
+    // User can send many messages through chats
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }
