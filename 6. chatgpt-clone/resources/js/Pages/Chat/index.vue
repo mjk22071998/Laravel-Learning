@@ -1,111 +1,110 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
-// The 'chats' prop is passed from the controller to the component
-const props = defineProps({
-  chats: Array,  // List of chat objects
-});
-
-// Sidebar toggle state
+const props = defineProps({ chats: Array });
 const isSidebarOpen = ref(false);
+const selectedChat = ref(null);
 
-// Toggle sidebar visibility
-const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value;
+onMounted(() => console.log(props.chats[0]));
+
+const toggleSidebar = () => isSidebarOpen.value = !isSidebarOpen.value;
+const closeSidebar = () => isSidebarOpen.value = false;
+const selectChat = (chatId) => {
+  selectedChat.value = props.chats.find(chat => chat.id === chatId);
+  if (window.innerWidth < 640) closeSidebar();
 };
 
-// Close sidebar when clicking on overlay
-const closeSidebar = () => {
-  isSidebarOpen.value = false;
-};
+watch(selectedChat, (newChat) => console.log("Selected Chat:", newChat));
 </script>
 
 <template>
     <Head title="Chats" />
-
     <AuthenticatedLayout>
-        <div class="flex w-full min-h-[calc(100vh-4rem)]">
-            <div class=" flex-grow-1 relative w-full items-stretch grid sm:grid-cols-4">
-            <!-- Overlay (Visible when sidebar is open) -->
-                <div
-                    v-if="isSidebarOpen"
-                    @click="closeSidebar"
-                    class="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
-                ></div>
+        <div class="flex w-full max-h-[calc(100vh-4rem)]">
+            <div class="grow-1 relative w-full items-stretch grid sm:grid-cols-4">
+                <!-- Overlay -->
+                <div v-if="isSidebarOpen" @click="closeSidebar"
+                     class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 sm:hidden transition-opacity"></div>
 
                 <!-- Sidebar -->
-                <div
-                    :class="[
-                    'absolute sm:relative sm:w-[100%] top-0 left-0 h-full w-3/4 bg-slate-900 transform transition-transform duration-300 z-50 sm:translate-x-0',
-                    isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
-                    ]"
-                >
-                    <ul v-if="chats.length>0">
-                        <!-- Loop through the chats array and display each title -->
-                        <li
-                        v-for="chat in chats"
-                        :key="chat.id"
-                        class="text-white text-sm py-2 border-b border-slate-700"
-                        >
-                        {{ chat.title }} <!-- Display the chat title -->
+                <div :class="[
+                    'absolute sm:relative sm:w-[100%] top-0 left-0 max-h-[calc(100vh-7rem)] w-3/4 bg-slate-900 transform transition-transform duration-300 z-50 sm:translate-x-0 overflow-y-auto',
+                    isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                ]">
+                    <ul v-if="chats.length > 0" class="divide-y divide-slate-700/50">
+                        <li v-for="chat in chats" :key="chat.id"
+                            @click="selectChat(chat.id)"
+                            :class="[
+                                'group px-4 py-3 cursor-pointer transition-colors',
+                                'hover:bg-slate-700/30',
+                                selectedChat?.id === chat.id ? 'bg-indigo-500/20 border-l-4 border-indigo-400' : ''
+                            ]">
+                            <div class="text-slate-200 group-hover:text-white transition-colors">
+                                <span class="font-medium">{{ chat.name }}</span>
+                                <p v-if="chat.lastMessage" class="text-sm mt-1 text-slate-400 line-clamp-1">
+                                    {{ chat.lastMessage }}
+                                </p>
+                            </div>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Main Content -->
-                <div class="col-span-3 p-4 bg-slate-600 relative sm:col-span-3">
-                    <!-- Hamburger Button (Visible only on small screens) -->
-                    <button
-                    @click="toggleSidebar"
-                    class="mb-1 sm:hidden bg-gray-800 text-white p-2 rounded-md"
-                    >
-                    <!-- Hamburger Icon -->
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h16m-7 6h7"
-                        />
-                    </svg>
-                    </button>
+                <div class="col-span-3 bg-slate-900 relative sm:col-span-3">
+                    <!-- Mobile Header -->
+                    <div class="sm:hidden p-4 border-b border-slate-700/50 bg-slate-800/50 backdrop-blur-sm">
+                        <button @click="toggleSidebar" class="flex items-center space-x-2 text-slate-300 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <span class="font-medium">{{ selectedChat?.name || 'Select a chat' }}</span>
+                        </button>
+                    </div>
 
-                    <!-- Main Content Area -->
-                    <div class="flex flex-col h-[100%]">
-                        <!-- Messages Section -->
-                        <div class="flex-grow p-4 overflow-y-auto">
-                            <!-- Messages go here -->
+                    <!-- Chat Area -->
+                    <div class="flex flex-col ">
+                        <!-- Messages Container -->
+                        <div class="flex-1 grow p-4 overflow-y-auto max-h-[calc(100vh-12rem)] space-y-4">
+                            <template v-if="selectedChat">
+                                <div v-for="message in selectedChat.messages" :key="message.id" 
+                                     class="flex" :class="message.status === 'sent' ? 'justify-end' : 'justify-start'">
+                                    <div :class="[
+                                        'max-w-[70%] rounded-2xl p-4 transition-all',
+                                        message.status === 'sent' 
+                                            ? 'bg-indigo-600 text-white rounded-br-none' 
+                                            : 'bg-slate-800 text-slate-200 rounded-bl-none'
+                                    ]">
+                                        <p class="text-sm">{{ message.Message }}</p>
+                                        <div class="flex items-center justify-end mt-2 space-x-2">
+                                            <span class="text-xs text-slate-400/80">{{ new Date(message.created_at).toLocaleTimeString() }}</span>
+                                            <svg v-if="message.status === 'sent'" class="w-4 h-4 text-indigo-300" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <div v-else class="h-full flex items-center justify-center">
+                                <p class="text-slate-400 text-lg">Select a chat to start messaging</p>
+                            </div>
                         </div>
 
-                        <!-- Input and Send Button Section -->
-                        <div class="flex flex-row p-4 mt-4">
-                            <!-- Input Field -->
-                            <input type="text" name="message" placeholder="Type a message..."
-                                class="flex-grow border rounded-full border-slate-900 bg-slate-200 px-4 py-2 text-sm focus:outline-none"/>
-
-                            <!-- Send Button -->
-                            <button class="ml-4 p-3 rounded-full bg-slate-900 text-slate-100 hover:bg-slate-700 focus:outline-none">
-                                <!-- Send Icon (You can use any icon here) -->
-                                <svg fill="currentColor" height="24x" width="24px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                    viewBox="0 0 495.003 495.003" xml:space="preserve">
-                                    <g id="XMLID_51_">
-                                        <path id="XMLID_53_" d="M164.711,456.687c0,2.966,1.647,5.686,4.266,7.072c2.617,1.385,5.799,1.207,8.245-0.468l55.09-37.616
-                                            l-67.6-32.22V456.687z"/>
-                                        <path id="XMLID_52_" d="M492.431,32.443c-1.513-1.395-3.466-2.125-5.44-2.125c-1.19,0-2.377,0.264-3.5,0.816L7.905,264.422
-                                            c-4.861,2.389-7.937,7.353-7.904,12.783c0.033,5.423,3.161,10.353,8.057,12.689l125.342,59.724l250.62-205.99L164.455,364.414
-                                            l156.145,74.4c1.918,0.919,4.012,1.376,6.084,1.376c1.768,0,3.519-0.322,5.186-0.977c3.637-1.438,6.527-4.318,7.97-7.956
-                                            L494.436,41.257C495.66,38.188,494.862,34.679,492.431,32.443z"/>
-                                    </g>
-                                </svg>
-                            </button>
+                        <!-- Input Area -->
+                        <div class="p-4 border-t border-slate-700/50 bg-slate-800/30 backdrop-blur-sm">
+                            <div class="flex items-center space-x-4">
+                                <input type="text" placeholder="Type your message..." 
+                                       class="flex-1 rounded-full border border-slate-700 bg-slate-800/50 px-6 py-3 text-slate-200 
+                                              placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                                              transition-all duration-200"/>
+                                <button class="p-3 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors
+                                             focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

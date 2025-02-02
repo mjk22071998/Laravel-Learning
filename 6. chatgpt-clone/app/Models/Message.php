@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+    use HasFactory;
+    
     // Mass assignable attributes
-    protected $fillable = ['message', 'chat_id', 'user_id', 'status', 'context'];
+    protected $fillable = ['Message', 'chat_id', 'user_id', 'status', 'context'];
 
     // Message belongs to a chat
     public function chat()
