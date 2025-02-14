@@ -3,7 +3,7 @@
     'name',
     'id',
     'label',
-    'initialContent',
+    'initialContent' => '',
     'minWords' => null,
     'value' => null
 ])

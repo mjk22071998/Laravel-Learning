@@ -35,7 +35,7 @@
                         <tr>
                             <td class="border border-slate-300 px-4 py-2">{{ $post->id }}</td>
                             <td class="border border-slate-300 px-4 py-2">{{ $post->title }}</td>
-                            <td class="border border-slate-300 px-4 py-2">{{ Str::limit($post->body, 50) }}</td>
+                            <td class="border border-slate-300 px-4 py-2">{{ Str::limit(strip_tags($post->body, 50)) }}</td>
                             <td class="border border-slate-300 px-4 py-2">{{ $post->created_at->diffForHumans() }}</td>
                             <td class="border border-slate-300 px-4 py-2">
                                 <x-button href="{{ route('post.show', $post->id) }}" 
